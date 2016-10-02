@@ -20,13 +20,14 @@ const initialState = {
 
 export default function (state:State = initialState, action:Action): State {
 
-  // console.log(state, "route state *()*(*&77");
+
   if (action.type === PUSH_NEW_ROUTE) {
     
     globalNav.navigator.push({id: action.route});
      let routes = state.routes;
-    // routes.push(action.route);
-
+     console.log("checking push routes");
+     console.log(routes);
+    
     return {
       routes: [...routes, action.route]
     };
@@ -39,17 +40,14 @@ export default function (state:State = initialState, action:Action): State {
     }
   if (action.type === REPLACE_ROUTE) {
     
-    globalNav.navigator.replaceWithAnimation({id: action.route});
+    globalNav.navigator.push({id: action.route});
   
     let routes = state.routes;
     let users = action.userDetail;
     state.userDetail = users;
     console.log("CHECKINGSTATE");
     console.log(users);
-    // console.log(users);
-   
-   
-    // routes.push(action.route);
+
 
 
     return {
@@ -59,29 +57,33 @@ export default function (state:State = initialState, action:Action): State {
 
   // For sidebar navigation
   if (action.type === REPLACE_OR_PUSH_ROUTE) {
-    let routes = state.routes;
     
-    if(routes[routes.length - 1] == 'home') {
-      // If top route is home and user navigates to a route other than home, then push
+
+    let routes = state.routes;
+    console.log("checking routes: ");
+    console.log(routes);
+    
+    // if(routes[routes.length - 1] == 'home') {
+    //   // If top route is home and user navigates to a route other than home, then push
       if(action.route != 'home')
         globalNav.navigator.push({id: action.route});
 
       // If top route is home and user navigates to home, do nothing
       else 
         routes = [];
-    }
+    // }
 
-    else {
-      if(action.route == 'home') {
-        globalNav.navigator.resetTo({id: 'home'});
-        routes = [];
-      }
-      else {
-        globalNav.navigator.replaceWithAnimation({id: action.route});
-        routes.pop();
-      }
+    // else {
+      // if(action.route == 'home') {
+      //   globalNav.navigator.resetTo({id: 'home'});
+      //   routes = [];
+      // }
+      // else {
+      //   globalNav.navigator.replaceWithAnimation({id: action.route});
+      //   routes.pop();
+      // }
       
-    }
+    
     
     return {
       routes: [...routes, action.route]

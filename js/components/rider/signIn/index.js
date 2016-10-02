@@ -37,6 +37,9 @@ class SignIn extends Component {
     replaceRoute(route, userDetail) {
         this.props.replaceRoute(route,userDetail);
     }
+    pushNewRoute(route) {
+         this.props.pushNewRoute(route);
+    }
     
     popRoute() {
         this.props.popRoute();
@@ -185,6 +188,7 @@ function bindActions(dispatch){
     return {
         replaceRoute:(route,userDetail)=>dispatch(replaceRoute(route,userDetail)),
         popRoute: () => dispatch(popRoute()),
+        pushNewRoute: () => dispatch(pushNewRoute(route)),
         
     }
 }
