@@ -286,8 +286,8 @@ class Home extends Component {
           // console.log(data);
           // console.log(details);
           console.log("SETTING NEW STATE");
-           this.setState({tripDetails: details});
-           console.log(this.state);
+         
+           console.log(this.props.state);
 
            this.pushNewRoute('confirmRide');
         
@@ -354,5 +354,16 @@ function bindActions(dispatch){
         pushNewRoute:(route)=>dispatch(pushNewRoute(route))
     }
 }
+function mapStateToProps(state) {
+  return {
+    name: state.name,
+    
+  };
+}
 
-export default connect(null, bindActions)(Home);
+export default connect(mapStateToProps, bindActions)(Home);
+
+
+
+
+

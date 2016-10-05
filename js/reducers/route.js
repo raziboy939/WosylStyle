@@ -7,7 +7,7 @@
 
 import type {Action} from '../actions/types';
 import {globalNav} from '../AppNavigator';
-import { PUSH_NEW_ROUTE, RESET_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE } from '../actions/route';
+import { PUSH_NEW_ROUTE, RESET_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE,SET_USER } from '../actions/route';
 import { REHYDRATE } from 'redux-persist/constants'
 
 export type State = {
@@ -20,6 +20,14 @@ const initialState = {
 
 export default function (state:State = initialState, action:Action): State {
 
+if (action.type === SET_USER) {
+    console.log("Payload:");
+    console.log(action.payload);
+    return {
+      ...state,
+      name: action.payload,
+    };
+  }
 
   if (action.type === PUSH_NEW_ROUTE) {
     
@@ -51,7 +59,7 @@ export default function (state:State = initialState, action:Action): State {
 
 
     return {
-      users
+      users: users
     };
   }
 

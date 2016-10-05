@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View,StatusBar,Platform,Image} from 'react-native';
 
-import { replaceRoute,popRoute } from '../../../actions/route';
+import { replaceRoute,popRoute, setUser} from '../../../actions/route';
 
 import { Container, Header, Text, Button, Icon, InputGroup, Input } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
@@ -20,6 +20,11 @@ import {
 
 class SignIn extends Component {
 
+  static propTypes = {
+    setUser: React.PropTypes.func,
+    replaceRoute: React.PropTypes.func,
+  }
+
 
 
 
@@ -28,13 +33,18 @@ class SignIn extends Component {
 
       this.state ={
       open: false,
-      email: '',
+      name: '',
       password: '',
       is_driver_verified: false,
     };
     }
+
+     setUser(name) {
+    this.props.setUser(name);
+  }
     
     replaceRoute(route, userDetail) {
+        this.setUser(this.state.name);
         this.props.replaceRoute(route,userDetail);
     }
     pushNewRoute(route) {
@@ -85,7 +95,8 @@ class SignIn extends Component {
 
 
                                 
-                                <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/login.json', {
+                                <Button onPress={() =>                   
+                                  fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/login.json', {
                                                       method: 'POST',
                                                       headers: {
                                                         'Accept': 'application/json',
@@ -100,15 +111,19 @@ class SignIn extends Component {
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
                                                             if (responseJson.success){
+                                                              this.state.name = responseJson.user.first_name;
 
                                                                this.setState({userDetail: responseJson.user});
                                                               
 
                                                                 if(responseJson.user.is_phone_verified ){
                                                                     this.setState({is_driver_verified:responseJson.user.is_driver_verified});
+
                                                                      console.log("USER DETAILS:")
                                                                console.log(this.state);
-                                                                   
+
+
+                                                                    this.props.setUser(this.state.name);
                                                                  this.replaceRoute('home',this.state.userDetail);
                                                                 }
 
@@ -140,15 +155,10 @@ class SignIn extends Component {
                                                             console.error(error);
                                                           })
 
-
-
-
-
-                                                }    block style={styles.regBtn}>
-
-
-                                <Text style={{color: '#fff',fontWeight: '600'}}>SIGN IN</Text>
-                            </Button>
+                              }    block style={styles.regBtn}>
+                                  
+                                    <Text style={{color: '#fff',fontWeight: '600'}}>SIGN IN</Text>
+                                </Button>
                         </View>
 
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -189,6 +199,7 @@ function bindActions(dispatch){
         replaceRoute:(route,userDetail)=>dispatch(replaceRoute(route,userDetail)),
         popRoute: () => dispatch(popRoute()),
         pushNewRoute: () => dispatch(pushNewRoute(route)),
+        setUser: (name) => dispatch(setUser(name)),
         
     }
 }

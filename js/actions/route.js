@@ -12,6 +12,8 @@ export const REPLACE_OR_PUSH_ROUTE = "REPLACE_OR_PUSH_ROUTE";
 export const POP_ROUTE = "POP_ROUTE";
 export const RESET_ROUTE = "RESET_ROUTE";
 export const POP_TO_ROUTE = "POP_TO_ROUTE";
+export const SET_USER = 'SET_USER';
+
 
 export function replaceRoute(route:string, userDetail):Action {
   return {
@@ -20,6 +22,14 @@ export function replaceRoute(route:string, userDetail):Action {
     userDetail: userDetail
   }
 }
+
+export function setUser(user:string):Action {
+  return {
+    type: SET_USER,
+    payload: user,
+  };
+}
+
 
 export function signIn(email,password):Action {
   return {
