@@ -13,7 +13,25 @@ import { Content, View, Text, Icon, List, ListItem } from 'native-base';
 import styles from './styles';
 
 
+
+
 class SideBar extends Component {
+
+     static propTypes = {
+    openDrawer: React.PropTypes.func,
+    closeDrawer: React.PropTypes.func,
+    replaceRoute: React.PropTypes.func,
+    replaceOrPushRoute: React.PropTypes.func,
+    pushNewRoute: React.PropTypes.func,
+    setIndex: React.PropTypes.func,
+    first_name: React.PropTypes.string,
+  
+    last_name: React.PropTypes.string,
+    email: React.PropTypes.string,
+    phone_no: React.PropTypes.string,
+    
+    list: React.PropTypes.arrayOf(React.PropTypes.string),
+  }
 
     navigateTo(route) {
         this.props.closeDrawer();
@@ -36,7 +54,7 @@ class SideBar extends Component {
                     	<List  foregroundColor={'white'} style={styles.profile}>
                             <ListItem button iconLeft style={Platform.OS === 'android' ? styles.alinks : styles.links} >
                                 <Icon name='ios-person' />
-                                <Text style={styles.linkText} >Shivraj Kumar</Text>
+                                <Text style={styles.linkText} >{this.props.first_name}</Text>
                             </ListItem>
                         </List>
                         <List  foregroundColor={'white'} style={styles.Bg} >
@@ -79,12 +97,16 @@ class SideBar extends Component {
                     </Content>
                     
             </View>
-        );
+        )
     }
 }
 
+
+
+
 function bindAction(dispatch) {
     return {
+        openDrawer: ()=>dispatch(openDrawer()),
         closeDrawer: ()=>dispatch(closeDrawer()),
         replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
         resetRoute:(route)=>dispatch(resetRoute(route)),
@@ -92,4 +114,38 @@ function bindAction(dispatch) {
     }
 }
 
-export default connect(null, bindAction)(SideBar);
+function mapStateToProps(state) {
+
+    console.log("maptostateSidebarrrr:");
+    console.log(state);
+
+    if (state.route.users){
+        return {
+    first_name: state.route.users.first_name,
+    last_name: state.route.users.last_name,
+    email: state.route.users.email,
+    phone_no: state.route.users.phone_no,
+
+    
+  }
+    }
+ 
+
+    else{
+  return {
+    first_name: "first Name",
+    last_name: "lastname",
+    email: "emaol",
+    phone_no: "phone number",
+    
+  }
+}
+
+
+}
+export default connect(mapStateToProps, bindAction)(SideBar);
+
+
+
+
+

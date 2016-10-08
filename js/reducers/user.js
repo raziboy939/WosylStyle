@@ -3,11 +3,11 @@ import type { Action } from '../actions/types';
 import { SET_USER } from '../actions/user';
 
 export type State = {
-    name: string
+    users: Object,
 }
 
 const initialState = {
-  name: '',
+  
 };
 
 export default function (state:State = initialState, action:Action): State {
@@ -16,7 +16,7 @@ export default function (state:State = initialState, action:Action): State {
   	console.log(action.payload);
     return {
       ...state,
-      name: action.payload,
+      users: action.payload,
     };
   }
   return state;

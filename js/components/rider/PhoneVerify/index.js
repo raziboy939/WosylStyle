@@ -64,7 +64,7 @@ class PhoneVerify extends Component {
                             </InputGroup>
                         </View>
                         <View style={styles.regBtnContain}>
-                            <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phonejson', {
+                            <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phone.json', {
                                                       method: 'POST',
                                                       headers: {
                                                         'Accept': 'application/json',
@@ -78,7 +78,8 @@ class PhoneVerify extends Component {
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
                                                             if (responseJson.success){
-                                                                 this.replaceRoute('home')
+                                                              console.log("phone verify sucess");
+                                                                 this.replaceRoute('home');
                                                             }
                                                           })
                                                           .catch((error) => {

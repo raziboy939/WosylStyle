@@ -10,11 +10,11 @@ export type Action =
     | { type: 'POP_ROUTE' }
     | { type: 'RESET_ROUTE' }
     | { type: 'POP_TO_ROUTE', route: string }
-    | { type: 'REPLACE_ROUTE', route: string }
+    | { type: 'REPLACE_ROUTE', users: object }
     | { type: 'REPLACE_OR_PUSH_ROUTE', route: string }
     | { type: 'OPEN_DRAWER'}
     | { type: 'CLOSE_DRAWER'}
-    | { type: 'SET_USER', name: string}
+    | { type: 'SET_USER', user: object}
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any;
 export type GetState = () => Object;

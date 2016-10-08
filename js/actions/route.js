@@ -23,7 +23,7 @@ export function replaceRoute(route:string, userDetail):Action {
   }
 }
 
-export function setUser(user:string):Action {
+export function setUser(user:object):Action {
   return {
     type: SET_USER,
     payload: user,

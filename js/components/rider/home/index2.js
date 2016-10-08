@@ -1,3 +1,20 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @raziboy939
+ Unwatch 1
+  Star 0
+  Fork 0 raziboy939/WosylStyle
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
+Branch: master Find file Copy pathWosylStyle/js/components/rider/home/index.js
+336e024  2 days ago
+@raziboy939 raziboy939 working trying to fix reducers and state management
+1 contributor
+RawBlameHistory     
+Executable File  370 lines (299 sloc)  13.2 KB
 'use strict';
 
 import React, { Component } from 'react';
@@ -6,8 +23,6 @@ import { connect } from 'react-redux';
 
 import { Image, View, Dimensions, Platform, StatusBar } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import { Modal, TouchableHighlight} from 'react-native';
-
 
 
 import { pushNewRoute } from '../../../actions/route';
@@ -35,22 +50,12 @@ const SPACE = 0.01;
 
 
 
-
-
 class Home extends Component {
 
     pushNewRoute(route) {
          this.props.pushNewRoute(route);
        }
        
-        static propTypes = {
-    first_name: React.PropTypes.string,
-   
-    last_name: React.PropTypes.string,
-    email: React.PropTypes.string,
-    phone_no: React.PropTypes.string,
-    list: React.PropTypes.arrayOf(React.PropTypes.string),
-  }
 
 
 
@@ -61,11 +66,7 @@ class Home extends Component {
         
           this.state = {
 
-            animationType: 'none',
-      modalVisible: false,
-    transparent: false,
-    selectedSupportedOrientation: 0,
-    currentOrientation: 'unknown',
+            tripDetails: [],
             opacity: 1,
             visible: false,
             uberPoolSelect: true,
@@ -91,21 +92,15 @@ class Home extends Component {
         };
 
          console.log("ON HOME PAGE STATE2: ");
-//     connect(state => ({
-//   userDetails: state.users
-// }));
-    console.log(this.props.users);
+    connect(state => ({
+  userDetails: state.users
+}));
+    console.log(this.props.userDetails);
         this.uberPool = this.uberPool.bind(this);
         this.uberGo = this.uberGo.bind(this);
         this.uberX = this.uberX.bind(this);
         this.uberXL = this.uberXL.bind(this);
     }
-
-
-
-    setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
     componentDidMount() {
 
       
@@ -219,8 +214,8 @@ class Home extends Component {
                         }
                         <Image source={require('../../../../images/dummyMap.png')} style={{height: height, opacity: this.state.opacity}}/>
                         <View style={styles.pinContainer}>
-                            <Button rounded onPress={() => this.setModalVisible(true)} iconRight style={styles.pinButton}>
-                                {this.props.email}
+                            <Button rounded onPress={() => this.pushNewRoute('confirmRide')} iconRight style={styles.pinButton}>
+                                SET PICKUP LOCATION
                                 <Icon name='ios-arrow-forward' style={{fontSize: 28}} />
                             </Button>
 
@@ -292,9 +287,7 @@ class Home extends Component {
                     </View>
                     <View style={styles.headerContainer}>
                     <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
-                        <Button transparent  onPress={ this.props.openDrawer
-
-                        } >
+                        <Button transparent  onPress={this.props.openDrawer} >
                             <Icon name='ios-menu' />
                         </Button>
                         <Title>Wosyl Delivery</Title>
@@ -306,7 +299,16 @@ class Home extends Component {
         autoFocus={false}
         fetchDetails={true}
        
-        onPress={(data, details = null) => { 
+        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+          // console.log(data);
+          // console.log(details);
+          console.log("SETTING NEW STATE");
+         
+           console.log(this.props.state);
+
+           this.pushNewRoute('confirmRide');
+        
+
 
 
 
@@ -353,31 +355,6 @@ class Home extends Component {
 
 
         filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  />
-
-        <View style={{marginTop: 22}}>
-        <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{marginTop: 22}}>
-          <View>
-            <Text>Hello World!</Text>
-
-            <Button onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
-            }}>
-              <Text>Hide Modal</Text>
-            </Button>
-
-          </View>
-         </View>
-        </Modal>
-
-        
-
-      </View>
                    
                     </View>
                 </View>
@@ -386,44 +363,26 @@ class Home extends Component {
 }
 
 
-function bindAction(dispatch) {
+
+
+function bindActions(dispatch){
     return {
-      openDrawer: ()=>dispatch(openDrawer()),
-        closeDrawer: ()=>dispatch(closeDrawer()),
-        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
-        resetRoute:(route)=>dispatch(resetRoute(route)),
-        replaceRoute:(route)=>dispatch(replaceRoute(route))
+        openDrawer: ()=>dispatch(openDrawer()),
+        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
     }
 }
-
 function mapStateToProps(state) {
-
-    console.log("checkinguserset");
-    console.log(state);
-    if (state.route.users){
-        return {
-    first_name: state.route.users.first_name,
-    last_name: state.route.users.last_name,
-    email: state.route.users.email,
-    phone_no: state.route.users.phone_no,
-
-    
-  }
-    }
- 
-
-    else{
   return {
-    first_name: "first Name",
-    last_name: "lastname",
-    email: "emaol",
-    phone_no: "phone number",
+    name: state.name,
     
-  }
+  };
 }
-}
+
+export default connect(mapStateToProps, bindActions)(Home);
 
 
 
 
-export default connect(mapStateToProps, bindAction)(Home);
+
+Contact GitHub API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Status Help

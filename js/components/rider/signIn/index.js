@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View,StatusBar,Platform,Image} from 'react-native';
 
-import { replaceRoute,popRoute, setUser} from '../../../actions/route';
+import { replaceRoute,popRoute} from '../../../actions/route';
+import {setUser} from '../../../actions/user';
 
 import { Container, Header, Text, Button, Icon, InputGroup, Input } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
@@ -21,7 +22,7 @@ import {
 class SignIn extends Component {
 
   static propTypes = {
-    setUser: React.PropTypes.func,
+    
     replaceRoute: React.PropTypes.func,
   }
 
@@ -39,8 +40,8 @@ class SignIn extends Component {
     };
     }
 
-     setUser(name) {
-    this.props.setUser(name);
+     setUser(users) {
+    this.props.setUser(users);
   }
     
     replaceRoute(route, userDetail) {
@@ -111,6 +112,7 @@ class SignIn extends Component {
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
                                                             if (responseJson.success){
+
                                                               this.state.name = responseJson.user.first_name;
 
                                                                this.setState({userDetail: responseJson.user});
@@ -123,7 +125,7 @@ class SignIn extends Component {
                                                                console.log(this.state);
 
 
-                                                                    this.props.setUser(this.state.name);
+                                                                    this.props.setUser(responseJson);
                                                                  this.replaceRoute('home',this.state.userDetail);
                                                                 }
 

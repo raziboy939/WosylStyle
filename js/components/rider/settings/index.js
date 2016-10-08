@@ -13,7 +13,26 @@ import theme from '../../../themes/base-theme';
 
 var { width, height } = Dimensions.get('window');
 
+
+
+
 class Settings extends Component {
+
+    static propTypes = {
+    openDrawer: React.PropTypes.func,
+    closeDrawer: React.PropTypes.func,
+    replaceRoute: React.PropTypes.func,
+    replaceOrPushRoute: React.PropTypes.func,
+    pushNewRoute: React.PropTypes.func,
+    setIndex: React.PropTypes.func,
+    
+     first_name: React.PropTypes.string,
+    last_name: React.PropTypes.string,
+    email: React.PropTypes.string,
+    phone_no: React.PropTypes.string,
+
+    list: React.PropTypes.arrayOf(React.PropTypes.string),
+  }
     
     popRoute() {
         this.props.popRoute();
@@ -40,21 +59,21 @@ class Settings extends Component {
                             <CardItem style={[{flexDirection: 'row'}, styles.inputContainer]}>
                                 <CardItem style={styles.input}>
                                     <Text note>FIRST NAME</Text>
-                                    <Input placeholder='Shivarj' placeholderTextColor='#797979' style={{marginLeft: -5}} />
+                                    <Input placeholder={this.props.first_name} placeholderTextColor='#797979' style={{marginLeft: -5}} />
                                 </CardItem>
                                 <CardItem style={styles.input}>
                                     <Text note>LAST NAME</Text>
-                                    <Input placeholder='Kumar' placeholderTextColor='#797979' style={{marginLeft: -5}} />
+                                    <Input placeholder={this.props.last_name} placeholderTextColor='#797979' style={{marginLeft: -5}} />
                                 </CardItem>
                             </CardItem>
                             <CardItem style={styles.inputContainer}>
                                 <CardItem style={styles.input}>
                                     <Text note>EMAIL</Text>
-                                    <Input placeholder='Shivraj@gmail.com' placeholderTextColor='#797979' style={{marginLeft: -5}} />
+                                    <Input placeholder={this.props.email} placeholderTextColor='#797979' style={{marginLeft: -5}} />
                                 </CardItem>
                                 <CardItem style={styles.input}>
                                     <Text note>MOBILE</Text>
-                                    <Input placeholder='9876543210' placeholderTextColor='#797979' style={{marginLeft: -5}} />
+                                    <Input placeholder={this.props.phone_no} placeholderTextColor='#797979' style={{marginLeft: -5}} />
                                 </CardItem>
                                 
                                 <CardItem style={styles.blueBorder}>
@@ -110,11 +129,49 @@ class Settings extends Component {
     }
 }
 
-
-function bindActions(dispatch){
+function bindActions(dispatch) {
     return {
-        popRoute: () => dispatch(popRoute())
+        closeDrawer: ()=>dispatch(closeDrawer()),
+        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
+        resetRoute:(route)=>dispatch(resetRoute(route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        popRoute:()=>dispatch(popRoute())
     }
 }
 
-export default connect(null, bindActions)(Settings);
+function mapStateToProps(state) {
+
+    console.log("maptostateSettings:");
+    console.log(state);
+
+    if (state.route.users){
+
+    
+  return {
+    first_name: state.route.users.first_name,
+    last_name: state.route.users.last_name,
+    email: state.route.users.email,
+    phone_no: state.route.users.phone_no,
+
+    
+  };
+}
+
+else {
+     return {
+    first_name: "Someones",
+    last_name: "Last name",
+    email: "Email address",
+    phone_no: "Phone number",
+
+    
+  };
+
+}
+
+}
+
+
+
+
+export default connect(mapStateToProps, bindActions)(Settings);

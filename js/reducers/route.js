@@ -11,11 +11,13 @@ import { PUSH_NEW_ROUTE, RESET_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, RE
 import { REHYDRATE } from 'redux-persist/constants'
 
 export type State = {
-  routes: Array<string>
+  routes: Array<string>,
+  users: Object
 }
 
 const initialState = {
-  routes: ['login']
+  routes: ['login'],
+  name: '',
 };
 
 export default function (state:State = initialState, action:Action): State {
@@ -32,31 +34,30 @@ if (action.type === SET_USER) {
   if (action.type === PUSH_NEW_ROUTE) {
     
     globalNav.navigator.push({id: action.route});
-     let routes = state.routes;
-     console.log("checking push routes");
-     console.log(routes);
     
+  
     return {
-      routes: [...routes, action.route]
+     
     };
   }
   if (action.type === RESET_ROUTE) {
         globalNav.navigator.resetTo({id: 'login'});
         return {
-            routes: []
+           
         }
     }
   if (action.type === REPLACE_ROUTE) {
     
     globalNav.navigator.push({id: action.route});
   
-    let routes = state.routes;
-    let users = action.userDetail;
-    state.userDetail = users;
-    console.log("CHECKINGSTATE");
-    console.log(users);
+    
+    //let first_name = action.userDetail.first_name;
+   
+    
+    // console.log("CHECKINGUSERS");
+    // console.log(users);
 
-
+ let users = action.userDetail;
 
     return {
       users: users
@@ -66,10 +67,8 @@ if (action.type === SET_USER) {
   // For sidebar navigation
   if (action.type === REPLACE_OR_PUSH_ROUTE) {
     
-
-    let routes = state.routes;
-    console.log("checking routes: ");
-    console.log(routes);
+   
+    
     
     // if(routes[routes.length - 1] == 'home') {
     //   // If top route is home and user navigates to a route other than home, then push
@@ -77,8 +76,7 @@ if (action.type === SET_USER) {
         globalNav.navigator.push({id: action.route});
 
       // If top route is home and user navigates to home, do nothing
-      else 
-        routes = [];
+     
     // }
 
     // else {
@@ -91,36 +89,39 @@ if (action.type === SET_USER) {
       //   routes.pop();
       // }
       
+
     
     
+
     return {
-      routes: [...routes, action.route]
+    ...state
+      
     };
   }
 
   if (action.type === POP_ROUTE) {
     globalNav.navigator.pop();
-    let routes = state.routes;
-    routes.pop();
+    //let first_name = state.first_name;
+  
     return {
-      routes: routes
-    }
+     state
+    };
   }
 
   if (action.type === POP_TO_ROUTE) {
     globalNav.navigator.popToRoute({id: action.route});
-    let routes = state.routes;
-    while (routes.pop() !== action.route) {}
+    //let first_name = state.first_name;
+  
     return {
-      routes: [...routes, action.route]
-    }
+    state
+    };
   }
 
   if (action.type === REHYDRATE) {
     const savedData = action['payload']['route'] || state;
     return {
       ...savedData
-    }
+    };
   }
 
   return state;
