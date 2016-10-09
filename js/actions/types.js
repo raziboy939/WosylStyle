@@ -14,7 +14,7 @@ export type Action =
     | { type: 'REPLACE_OR_PUSH_ROUTE', route: string }
     | { type: 'OPEN_DRAWER'}
     | { type: 'CLOSE_DRAWER'}
-    | { type: 'SET_USER', user: object}
+    | { type: 'SET_USER', users: object}
 
 export type Dispatch = (action:Action | ThunkAction | PromiseAction | Array<Action>) => any;
 export type GetState = () => Object;

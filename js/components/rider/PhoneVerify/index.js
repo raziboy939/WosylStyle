@@ -24,6 +24,7 @@ class PhoneVerify extends Component {
       super(props);
 
       this.state ={
+
       phone_code: '',
       open: false,
      
@@ -32,9 +33,10 @@ class PhoneVerify extends Component {
     popRoute() {
         this.props.popRoute();
     }
-    replaceRoute(route) {
-        this.props.replaceRoute(route);
-    } 
+     replaceRoute(route, userDetail) {
+        
+        this.props.replaceRoute(route,userDetail);
+    }
     
     
     render() {
@@ -64,22 +66,31 @@ class PhoneVerify extends Component {
                             </InputGroup>
                         </View>
                         <View style={styles.regBtnContain}>
-                            <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phone.json', {
+                            <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phone.json?' + 'phone_verification_code=' + this.state.phone_code, {
                                                       method: 'POST',
                                                       headers: {
                                                         'Accept': 'application/json',
                                                         'Content-Type': 'application/json',
-                                                        'X-Auth-Token': 'cccca0dfe53d5fdf42eeafb79ac5757e',
+                                                        'X-Auth-Token': this.props.authToken,
                                                       },
                                                       body: JSON.stringify({
                                                         
-                                                        phone_verification_code: this.state.phone_code,
+                                                        
                                                       })
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
+
+                                                            console.log("json worked");
+                                                            console.log('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phone.json?' + 'phone_verification_code=' + this.state.phone_code);
                                                             if (responseJson.success){
                                                               console.log("phone verify sucess");
-                                                                 this.replaceRoute('home');
+                                                                 this.replaceRoute('home',responseJson.user);
+                                                            }
+
+                                                            else{
+                                                              this.setState({open: true});
+                                                                this.setState({phone_code:''});
+
                                                             }
                                                           })
                                                           .catch((error) => {
@@ -115,7 +126,7 @@ class PhoneVerify extends Component {
                                           <TouchableOpacity
                                              style={{margin: 5}}
                                              onPress={() => this.setState({open: false})}>
-                                             <Text>Close modal</Text>
+                                             <Text>Close</Text>
                                           </TouchableOpacity>
                                        </View>
                                     </Modal>
@@ -140,8 +151,42 @@ class PhoneVerify extends Component {
 function bindActions(dispatch){
     return {
         popRoute: () => dispatch(popRoute()),
-        replaceRoute:(route)=>dispatch(replaceRoute(route))
+        replaceRoute:(route,userDetail)=>dispatch(replaceRoute(route,userDetail))
     }
 }
 
-export default connect(null, bindActions)(PhoneVerify);
+function mapStateToProps(state) {
+
+    console.log("checkingusersetPhoneVerify");
+    console.log(state);
+    if (state.route.users){
+      console.log("acess token: ");
+      console.log(state.route.users.access_token);
+        return {
+    first_name: state.route.users.first_name,
+    last_name: state.route.users.last_name,
+    email: state.route.users.email,
+    phone_no: state.route.users.phone_no,
+    authToken: state.route.users.access_token,
+
+    
+  }
+    }
+ 
+
+    else{
+  return {
+    first_name: "first Name",
+    last_name: "lastname",
+    email: "email",
+    phone_no: "phone number",
+    authToken: 'none',
+    
+  }
+}
+}
+
+
+
+
+export default connect(mapStateToProps, bindActions)(PhoneVerify);

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, View, TouchableOpacity,Platform,Dimensions } from 'react-native';
 
-import { replaceRoute } from '../../../actions/route';
+import { replaceRoute, popRoute } from '../../../actions/route';
 
 import {Container, Header, Content, Text, Button, Icon,Thumbnail, Card, CardItem } from 'native-base';
 import MapView from 'react-native-maps';
@@ -56,7 +56,7 @@ class History extends Component {
                 <Container theme={theme} style={{backgroundColor: '#fff'}} >
 
                     <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
-                        <Button transparent  onPress={() => this.replaceRoute('home')} >
+                        <Button transparent  onPress={() => this.popRoute()} >
                             <Icon name='md-arrow-back' style={{fontSize: 28}} />
                         </Button>
                         <Text style={Platform.OS === 'ios' ? styles.iosHeaderTitle : styles.aHeaderTitle}>Select a trip</Text>

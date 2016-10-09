@@ -4,14 +4,21 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Image, View, Dimensions, Platform, StatusBar } from 'react-native';
+import {BlurView} from 'react-native-blur';
+import LoadingOverlay from '../LoadingOverlay';
+import AwesomeButton from 'react-native-awesome-button';
+
+import { Image, View, Dimensions, Platform, StatusBar, Switch, Slider, DatePickerIOS, Picker, PickerIOS, ProgressViewIOS } from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import { Modal, TouchableHighlight} from 'react-native';
 
 
+import Form from 'react-native-form'
 
 import { pushNewRoute } from '../../../actions/route';
+import { createPickup } from '../../../actions/route';
 import { openDrawer } from '../../../actions/drawer';
+
 
 import { Header, Content, Text, Button, Icon, Card, Title, InputGroup, Input } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
@@ -26,6 +33,7 @@ import theme from '../../../themes/base-theme';
 
 
 var { width, height } = Dimensions.get('window');
+
 const ASPECT_RATIO = width / height;
 const LATITUDE = 12.920614;
 const LONGITUDE = 77.586234;
@@ -37,11 +45,20 @@ const SPACE = 0.01;
 
 
 
+
+
+
+
 class Home extends Component {
 
     pushNewRoute(route) {
          this.props.pushNewRoute(route);
        }
+
+
+ 
+
+
        
         static propTypes = {
     first_name: React.PropTypes.string,
@@ -52,6 +69,8 @@ class Home extends Component {
     list: React.PropTypes.arrayOf(React.PropTypes.string),
   }
 
+  
+
 
 
     constructor(props) {
@@ -60,6 +79,14 @@ class Home extends Component {
        
         
           this.state = {
+
+            progress: 0.33,
+             isVisible: false,
+            fromLocation: '',
+            toLocation: '',
+            itemPickup: '',
+            notes: '',
+
 
             animationType: 'none',
       modalVisible: false,
@@ -102,13 +129,28 @@ class Home extends Component {
     }
 
 
-
-    setModalVisible(visible) {
+ setModalVisible (visible) {
     this.setState({modalVisible: visible});
   }
+ createPickup(){
+
+        this.setState({modalVisible: false});
+
+    var pickupItem = {"toLocation" : this.state.toLocation, "fromLocation" : this.state.fromLocation, "itemPickup" : this.state.itemPickup, "notes" : this.state.notes };
+    this.props.createPickup('createPickup',pickupItem);
+  }
+  
+
+
+    
+
+
+
+
+
     componentDidMount() {
 
-      
+
 
             navigator.geolocation.getCurrentPosition(
       (position) => this.setState({position}),
@@ -160,6 +202,8 @@ class Home extends Component {
        direction: 0
      }
   }
+
+   
   onChange(e) {
     this.setState({ mapLocation: e });
   }
@@ -169,6 +213,8 @@ class Home extends Component {
   onUpdateUserLocation (location) {
     console.log(location)
   }
+
+   
 
 
     onDidFocus(){
@@ -220,7 +266,7 @@ class Home extends Component {
                         <Image source={require('../../../../images/dummyMap.png')} style={{height: height, opacity: this.state.opacity}}/>
                         <View style={styles.pinContainer}>
                             <Button rounded onPress={() => this.setModalVisible(true)} iconRight style={styles.pinButton}>
-                                {this.props.email}
+                                Create Pickup
                                 <Icon name='ios-arrow-forward' style={{fontSize: 28}} />
                             </Button>
 
@@ -228,68 +274,7 @@ class Home extends Component {
                             </View>
                         </View>
 
-                    <View style={styles.slideSelector}>
-                        {this.state.uberPoolSelect === true &&
-                        <View style={styles.shareContainer}>
-                            <Grid>
-                                <Col style={[styles.shareOptions, {width: width/1.4}]}><Text style={{color: '#555'}}>Share your car and save upto<Text style={styles.shareType}> 50%</Text></Text>
-                                </Col>
-                                <Col style={styles.share}><Text style={{fontSize: 15,color: '#555'}}>1-2 people</Text></Col>
-                            </Grid>
-                        </View>
-                        }
-                        {this.state.uberGoSelect === true &&
-                        <View style={styles.shareContainer}>
-                            <Grid style={{justifyContent: 'center'}}>
-                                <Col style={[styles.shareOptions, {width: width/1.4}]}><Text style={{color: '#555'}}>SELECT<Text style={styles.shareType}> TAXIPOOL</Text> NEXT</Text></Col>
-                                <Col style={styles.share}><Text style={{fontSize: 9,color: '#555',fontWeight: '600'}}>SAVE UPTO 50%</Text></Col>
-                            </Grid>
-                        </View>
-                        }
-                        <Grid>
-                            <Col style={styles.taxiTypeContainer} >
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiPool</Text>
-                                </Row>
-                                <Row style={this.state.uberPoolSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberPoolSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberPoolSelect === false ? 'ios-radio-button-off' : 'ios-people' } style={this.state.uberPoolSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberPool.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-                            <Col style={styles.taxiTypeContainer}>
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiGO</Text>
-                                </Row>
-                                <Row style={this.state.uberGoSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberGoSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberGoSelect === false ? 'ios-radio-button-off' : 'ios-car' } style={this.state.uberGoSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberGo.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-                            <Col style={styles.taxiTypeContainer}>
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiX</Text>
-                                </Row>
-                                <Row style={this.state.uberXSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberXSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberXSelect === false ? 'ios-radio-button-off' : 'ios-car' } style={this.state.uberXSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberX.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-                            <Col style={styles.taxiTypeContainer}>
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiXL</Text>
-                                </Row>
-                                <Row style={this.state.uberXLSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberXLSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberXLSelect === false ? 'ios-radio-button-off' : 'ios-car' } style={this.state.uberXLSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberXL.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-
-                        </Grid>
-                    </View>
+                    
                     <View style={styles.headerContainer}>
                     <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
                         <Button transparent  onPress={ this.props.openDrawer
@@ -353,37 +338,90 @@ class Home extends Component {
 
 
         filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  />
-
-        <View style={{marginTop: 22}}>
-        <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{marginTop: 22}}>
-          <View>
-            <Text>Hello World!</Text>
-
-            <Button onPress={() => {
-              this.setModalVisible(!this.state.modalVisible)
-            }}>
-              <Text>Hide Modal</Text>
-            </Button>
-
-          </View>
-         </View>
-        </Modal>
-
         
+        <View style={{marginTop: 5}}>
+       
+          <Modal
+            animationType={"slide"}
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {alert("Modal has been closed.")}} >
+            
+             
+              
 
-      </View>
+            <View  >
+              <View style={styles.modalStyle}>
+              
+                
+
+                 <View style={{padding: 10}}>
+                 <Button transparent style={{height: 10, marginBottom: 10}} onPress={() => {
+
+             this.setModalVisible(false);
+            }}
+             underlayColor='#99d9f4'>
+                    <Text style={styles.buttonText}>close</Text>
+                  </Button>
+
+
+                  <View style ={styles.progressBar}>
+                    <ProgressViewIOS  progress={this.state.progress}/>
+                  </View>
+                  
+                  <Text style={styles.buttonText2}>Pick up Info</Text>
+                  <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
+                    <Icon name='ios-home' style={{color:'#16ADD4'}}/>
+                    <Input onChangeText={(text) => this.setState({fromLocation:text})} autoCapitalize="none" value={this.state.fromLocation}placeholder="From: Address" placeholderTextColor="#FFFFFF" />
+                 </InputGroup>
+               </View>
+                        <View style={{padding: 10}}>
+                            <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
+                                <Icon name='md-log-out' style={{color:'#16ADD4'}}/>
+                                <Input onChangeText={(text) => this.setState({toLocation:text})} value={this.state.toLocation}placeholder="To: Address"  placeholderTextColor="#FFFFFF" />
+                            </InputGroup>
+                        </View>
+                        <View style={{padding: 10}}>
+                            <InputGroup  borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
+                                  <Icon name='ios-briefcase' style={{color:'#16ADD4'}}/>
+                                <Input onChangeText={(text) => this.setState({itemPickup:text})} value={this.state.itemPickup}placeholder="Item:"  placeholderTextColor="#FFFFFF" />
+                            </InputGroup>
+                        </View>
+                        <View style={{padding: 10}}>
+                            <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
+                                <Icon name='ios-paper' style={{color:'#16ADD4'}}/>
+                                <Input onChangeText={(text) => this.setState({notes:text})} value={this.state.notes}placeholder="Notes:"  placeholderTextColor="#FFFFFF" />
+                            </InputGroup>
+                        </View>
+        
+                 
+
+                  <Button rounded style={styles.formButton} onPress={() => {
+
+              this.createPickup();
+            }}
+             underlayColor='#99d9f4'>
+                    <Text style={styles.buttonText}>Continue</Text>
+                  </Button>
+
+                  
+
+
+              </View>
+            </View>
+            
+          </Modal>
+          
+        </View>
+         
                    
-                    </View>
-                </View>
+   </View>
+</View>
         )
     }
 }
+
+ 
 
 
 function bindAction(dispatch) {
@@ -392,7 +430,8 @@ function bindAction(dispatch) {
         closeDrawer: ()=>dispatch(closeDrawer()),
         replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
         resetRoute:(route)=>dispatch(resetRoute(route)),
-        replaceRoute:(route)=>dispatch(replaceRoute(route))
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        createPickup: (route,pickup) =>dispatch(createPickup(route,pickup)),
     }
 }
 
@@ -416,7 +455,7 @@ function mapStateToProps(state) {
   return {
     first_name: "first Name",
     last_name: "lastname",
-    email: "emaol",
+    email: "email",
     phone_no: "phone number",
     
   }

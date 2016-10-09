@@ -8,7 +8,7 @@ module.exports = {
     brandSuccess: "#5cb85c",
     brandDanger: "#d9534f",
     brandWarning: "#f0ad4e",
-    brandSidebar: "#252932",
+    brandSidebar: "#5ba9de",
 
     inverseTextColor: "#fff",
     textColor: "#000",

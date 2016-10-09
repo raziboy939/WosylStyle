@@ -18,6 +18,7 @@ import SignIn from './components/rider/signIn/';
 import Register from './components/rider/register/';
 import DriverSignup from './components/rider/DriverSignup/';
 import Home from './components/rider/home/';
+import CreatePickup from './components/rider/createPickup/';
 import SplashPage from './components/splashscreen/';
 import SideBar from './components/rider/sideBar';
 import Payment from './components/rider/payment';
@@ -34,6 +35,7 @@ import PickRider from './components/driver/pickRider';
 import StartRide from './components/driver/startRide';
 import DropOff from './components/driver/dropOff';
 import RateRider from './components/driver/rateRider';
+import LoadingOverlay from './components/rider/LoadingOverlay';
 import { statusBarColor } from "./themes/base-theme";
 
 
@@ -211,6 +213,10 @@ class AppNavigator extends Component {
                 return <RateRider navigator={navigator} />;
             case 'PhoneVerify':
                 return <PhoneVerify navigator={navigator} />;
+            case 'LoadingOverlay':
+                return <LoadingOverlay navigator={navigator} />;
+            case 'createPickup':
+                return <CreatePickup navigator={navigator} />;
             default :
                 return <Login navigator={navigator}  />;
         }

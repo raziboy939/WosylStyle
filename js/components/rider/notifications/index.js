@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, View, Dimensions, Platform } from 'react-native';
 
-import { replaceRoute } from '../../../actions/route';
+import { replaceRoute,popRoute} from '../../../actions/route';
 
 import { Container, Header, Content, Text, Button, Icon, Card, CardItem } from 'native-base';
 
@@ -30,7 +30,7 @@ class Notifications extends Component {
                 <Container theme={theme} style={{backgroundColor: '#fff'}} >
      
                     <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
-                        <Button transparent  onPress={() => this.replaceRoute('home')} >
+                        <Button transparent  onPress={() => this.popRoute()} >
                             <Icon name='md-arrow-back' style={{fontSize: 28}} />
                         </Button>
                         <Text style={Platform.OS === 'ios' ? styles.iosHeaderText : styles.aHeaderText}>Notifications</Text>
@@ -39,7 +39,7 @@ class Notifications extends Component {
                     <Content style={styles.container}>
                         
                             <Text style={styles.contentHeading}> 
-                                IN CASE YOU DIDN'T KNOW
+                                IN CASE YOU DIDNT KNOW
                             </Text>
                             <View style={{padding: 20}}>
                                 <Card>

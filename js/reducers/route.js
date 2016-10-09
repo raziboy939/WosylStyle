@@ -7,12 +7,13 @@
 
 import type {Action} from '../actions/types';
 import {globalNav} from '../AppNavigator';
-import { PUSH_NEW_ROUTE, RESET_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE,SET_USER } from '../actions/route';
+import { PUSH_NEW_ROUTE, RESET_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE,SET_USER,CREATE_PICKUP } from '../actions/route';
 import { REHYDRATE } from 'redux-persist/constants'
 
 export type State = {
   routes: Array<string>,
-  users: Object
+  users: Object,
+  pickup: Object,
 }
 
 const initialState = {
@@ -30,6 +31,18 @@ if (action.type === SET_USER) {
       name: action.payload,
     };
   }
+
+  if (action.type === CREATE_PICKUP) {
+    globalNav.navigator.push({id: action.route});
+    let pickup = action.pickup;
+
+   
+    return {
+      ...state,
+      pickup: pickup,
+     
+    };
+}
 
   if (action.type === PUSH_NEW_ROUTE) {
     
@@ -104,7 +117,7 @@ if (action.type === SET_USER) {
     //let first_name = state.first_name;
   
     return {
-     state
+     ...state
     };
   }
 
@@ -113,7 +126,7 @@ if (action.type === SET_USER) {
     //let first_name = state.first_name;
   
     return {
-    state
+    ...state
     };
   }
 

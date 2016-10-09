@@ -27,10 +27,17 @@ module.exports = StyleSheet.create({
         margin: 10
 
     },
+    containerButton: {
+    flex: 1,
+    flexDirection: 'row',
+    margin: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
     container: {
     flex: 1,
     position: 'relative',
-    backgroundColor: '#fff'
+    backgroundColor: '#696969'
   },
   slideSelector: {
   	// marginTop: 100,
@@ -103,6 +110,38 @@ module.exports = StyleSheet.create({
     paddingLeft: 7,
     paddingTop: 5
   },
+
+  formContainer: {
+    justifyContent: 'center',
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  formButton: {
+    height: 24,
+    backgroundColor: '#48BBEC',
+    borderColor: '#48BBEC',
+    
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    marginLeft: 30, 
+    marginRight: 30,
+    marginTop: 20,
+    marginBottom: 20
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  buttonText2: {
+    fontSize: 24,
+    color: 'white',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20
+  },
+
   taxiIcon: {
     fontSize: 15,
     color: '#aaa',
@@ -127,5 +166,13 @@ module.exports = StyleSheet.create({
     color: 'green',
     textAlign: 'center'
   },
+  modalStyle: {
+    marginTop:140,
+    backgroundColor: '#696969'
+  },
+  progressBar: {
+    paddingLeft:30,
+    paddingRight:30
+  }
 
 });

@@ -81,12 +81,12 @@ class SignIn extends Component {
                       </View>
                         <View style={{padding: 10}}>
                             <InputGroup>
-                                <Input onChangeText={(text) => this.setState({email:text})} autoCapitalize="none" value={this.state.email}placeholder="Email Address" placeholderTextColor="#797979" />
+                                <Input borderType='rounded' onChangeText={(text) => this.setState({email:text})} autoCapitalize="none" value={this.state.email}placeholder="Email Address" placeholderTextColor="#797979" />
                             </InputGroup>
                         </View>
                         <View style={{padding: 10}}>
                             <InputGroup>
-                                <Input onChangeText={(text) => this.setState({password:text})} value={this.state.password}placeholder="Password" secureTextEntry={true} placeholderTextColor="#797979" />
+                                <Input borderType='rounded' onChangeText={(text) => this.setState({password:text})} value={this.state.password}placeholder="Password" secureTextEntry={true} placeholderTextColor="#797979" />
                             </InputGroup>
                         </View>
 
@@ -96,7 +96,7 @@ class SignIn extends Component {
 
 
                                 
-                                <Button onPress={() =>                   
+                                <Button rounded onPress={() =>                   
                                   fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/login.json', {
                                                       method: 'POST',
                                                       headers: {
@@ -125,7 +125,7 @@ class SignIn extends Component {
                                                                console.log(this.state);
 
 
-                                                                    this.props.setUser(responseJson);
+                                                                    this.props.setUser(responseJson.user);
                                                                  this.replaceRoute('home',this.state.userDetail);
                                                                 }
 
@@ -139,7 +139,7 @@ class SignIn extends Component {
                                                                     if(this.state.is_activated){
 
 
-                                                                    this.replaceRoute('PhoneVerify')
+                                                                    this.replaceRoute('PhoneVerify',responseJson.user);
                                                                     }
                                                                 }
                                                             }
@@ -205,5 +205,7 @@ function bindActions(dispatch){
         
     }
 }
+
+
 
 export default connect(null, bindActions)(SignIn);

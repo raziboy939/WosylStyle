@@ -111,7 +111,7 @@ class Register extends Component {
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
                                                             if (responseJson.success){
-                                                                 this.replaceRoute('PhoneVerify')
+                                                                 this.replaceRoute('PhoneVerify',responseJson.user)
                                                             }
                                                           })
                                                           .catch((error) => {
@@ -135,7 +135,7 @@ class Register extends Component {
 function bindActions(dispatch){
     return {
         popRoute: () => dispatch(popRoute()),
-        replaceRoute:(route)=>dispatch(replaceRoute(route))
+        replaceRoute:(route,userDetail)=>dispatch(replaceRoute(route,userDetail))
     }
 }
 

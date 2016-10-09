@@ -13,21 +13,31 @@ export const POP_ROUTE = "POP_ROUTE";
 export const RESET_ROUTE = "RESET_ROUTE";
 export const POP_TO_ROUTE = "POP_TO_ROUTE";
 export const SET_USER = 'SET_USER';
+export const CREATE_PICKUP = "CREATE_PICKUP";
 
 
 export function replaceRoute(route:string, userDetail):Action {
   return {
     type: REPLACE_ROUTE,
     route: route,
-    userDetail: userDetail
+    userDetail: userDetail,
   }
+}
+
+export function createPickup(route:string, pickup: object):Action {
+  return {
+    type: CREATE_PICKUP,
+    route: route,
+    pickup: pickup,
+  }
+
 }
 
 export function setUser(user:object):Action {
   return {
     type: SET_USER,
-    payload: user,
-  };
+    user: user,
+  }
 }
 
 

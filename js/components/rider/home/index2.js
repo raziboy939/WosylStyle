@@ -1,20 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @raziboy939
- Unwatch 1
-  Star 0
-  Fork 0 raziboy939/WosylStyle
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathWosylStyle/js/components/rider/home/index.js
-336e024  2 days ago
-@raziboy939 raziboy939 working trying to fix reducers and state management
-1 contributor
-RawBlameHistory     
-Executable File  370 lines (299 sloc)  13.2 KB
 'use strict';
 
 import React, { Component } from 'react';
@@ -383,6 +366,3 @@ export default connect(mapStateToProps, bindActions)(Home);
 
 
 
-
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
