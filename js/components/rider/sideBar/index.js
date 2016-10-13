@@ -84,7 +84,7 @@ class SideBar extends Component {
 
 
 
-                            <ListItem button onPress={() => this.replaceRoute('DriverSignup')} 
+                            <ListItem button onPress={() => this.navigateTo('DriverSignup')} 
 
 
 

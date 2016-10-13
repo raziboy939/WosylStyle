@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Image, View, TouchableOpacity,Dimensions,Platform } from 'react-native';
 
-import { popRoute,pushNewRoute } from '../../../actions/route';
+import { popRoute,replaceOrPushRoute } from '../../../actions/route';
 
 import { Container, Header, Text, Button, Icon, Card } from 'native-base';
 
@@ -18,8 +18,8 @@ class Payment extends Component {
     popRoute() {
         this.props.popRoute();
     }
-    pushNewRoute(route) {
-         this.props.pushNewRoute(route);
+    replaceOrPushRoute(route) {
+         this.props.replaceOrPushRoute(route);
     }
     render() {
         return (
@@ -30,7 +30,7 @@ class Payment extends Component {
                             <Icon name='md-arrow-back' style={{fontSize: 28}} />
                         </Button>
                         <Text style={Platform.OS === 'ios' ? styles.iosHeaderTitle : styles.aHeaderTitle }>Payment</Text>
-                        <Button transparent  onPress={() => this.pushNewRoute('cardPayment')}>
+                        <Button transparent  onPress={() => this.replaceOrPushRoute('cardPayment')}>
                             <Icon name='ios-card' style={{color: '#797979'}} />
                         </Button>
                     </Header>
@@ -57,7 +57,7 @@ class Payment extends Component {
 function bindActions(dispatch){
     return {
         popRoute: () => dispatch(popRoute()),
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route)),
+        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
     }
 }
 

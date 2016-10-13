@@ -82,6 +82,8 @@ class PhoneVerify extends Component {
 
                                                             console.log("json worked");
                                                             console.log('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phone.json?' + 'phone_verification_code=' + this.state.phone_code);
+                                                            console.log('auth code:');
+                                                            console.log(this.props.authToken);
                                                             if (responseJson.success){
                                                               console.log("phone verify sucess");
                                                                  this.replaceRoute('home',responseJson.user);

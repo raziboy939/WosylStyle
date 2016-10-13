@@ -18,7 +18,7 @@
     "react-native-code-push": "^1.12.1-beta",
     "react-native-country-picker-modal": "^0.1.6",
     "react-native-form": "^2.1.0",
-    "react-native-google-places-autocomplete": "^1.2.3",
+    "react-native-google-places-autocomplete": "^1.1.10",
     "react-native-mapbox-gl": "^5.0.0",
     "react-native-maps": "0.7.1",
     "react-native-overlay": "^0.5.0",

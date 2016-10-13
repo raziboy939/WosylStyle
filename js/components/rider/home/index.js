@@ -9,7 +9,7 @@ import LoadingOverlay from '../LoadingOverlay';
 import AwesomeButton from 'react-native-awesome-button';
 
 import { Image, View, Dimensions, Platform, StatusBar, Switch, Slider, DatePickerIOS, Picker, PickerIOS, ProgressViewIOS } from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
 import { Modal, TouchableHighlight} from 'react-native';
 
 
@@ -82,8 +82,12 @@ class Home extends Component {
 
             progress: 0.33,
              isVisible: false,
-            fromLocation: '',
+            fromLocation: 'From: Current Location',
+            fromLatitude: 0,
+            fromLongtitude: 0,
             toLocation: '',
+            toLatitude: 0,
+            toLongtitude: 0,
             itemPickup: '',
             notes: '',
 
@@ -136,7 +140,8 @@ class Home extends Component {
 
         this.setState({modalVisible: false});
 
-    var pickupItem = {"toLocation" : this.state.toLocation, "fromLocation" : this.state.fromLocation, "itemPickup" : this.state.itemPickup, "notes" : this.state.notes };
+    var pickupItem = {"toLocation" : this.state.toLocation, "toLatitude": this.state.toLatitude, "toLongtitude" : this.state.toLatitude, 
+    "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude, "itemPickup" : this.state.itemPickup, "notes" : this.state.notes };
     this.props.createPickup('createPickup',pickupItem);
   }
   
@@ -249,6 +254,9 @@ class Home extends Component {
           style={styles.map}
           rotateEnabled={true}
           showsUserLocation={true}
+          attributionButtonIsHidden = {false}
+          logoIsHidden = {true}
+          compassIsHidden = {true}
           accessToken={'sk.eyJ1Ijoid29zeWwxMjMiLCJhIjoiY2l0NmxxdnJpMDAwNDMwbWZtY21jdmp2NiJ9.H2G2P39VR7kEkEtz0Ji3lw'}
           initalZoomLevel = {10}
           centerCoordinate={this.state.center}
@@ -265,7 +273,16 @@ class Home extends Component {
                         }
                         <Image source={require('../../../../images/dummyMap.png')} style={{height: height, opacity: this.state.opacity}}/>
                         <View style={styles.pinContainer}>
-                            <Button rounded onPress={() => this.setModalVisible(true)} iconRight style={styles.pinButton}>
+                            <Button rounded onPress={() => 
+                              
+                             
+                              this.setModalVisible(true)
+
+
+
+
+                            }
+                             iconRight style={styles.pinButton}>
                                 Create Pickup
                                 <Icon name='ios-arrow-forward' style={{fontSize: 28}} />
                             </Button>
@@ -286,12 +303,20 @@ class Home extends Component {
                     </Header>
                     
                         <GooglePlacesAutocomplete
-        placeholder='Search'
+        placeholder='Pickup Location'
         minLength={2} // minimum length of text to search
         autoFocus={false}
         fetchDetails={true}
        
         onPress={(data, details = null) => { 
+          console.log("googleplaces");
+          console.log(details);
+          this.setState({fromLocation:details.name});
+          this.setState({fromLatitude:details.geometry.location.lat});
+          this.setState({fromLongtitude:details.geometry.location.lat});
+          console.log("from lat and long:");
+          console.log(this.state.fromLatitude);
+          this.setModalVisible(true);
 
 
 
@@ -318,12 +343,16 @@ class Home extends Component {
             backgroundColor: 'rgba(255, 253, 249, 1)'
           },
           container:{
-            backgroundColor: 'rgba(255, 253, 249, 1)'
+             backgroundColor: 'rgba(255, 253, 249, 1)',
+             borderRadius: 30,
+             borderRightRadius: 25,
+             borderLeftRadius: 25,
+             borderBottomRadius: 25,
           
         },
       }}
 
-
+        enablePoweredByContainer = {false}
         currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
         currentLocationLabel="Current location"
         nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
@@ -337,7 +366,7 @@ class Home extends Component {
         }}
 
 
-        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  />
+        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  > </GooglePlacesAutocomplete>
         
         <View style={{marginTop: 5}}>
        
@@ -376,21 +405,113 @@ class Home extends Component {
                  </InputGroup>
                </View>
                         <View style={{padding: 10}}>
-                            <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                                <Icon name='md-log-out' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({toLocation:text})} value={this.state.toLocation}placeholder="To: Address"  placeholderTextColor="#FFFFFF" />
-                            </InputGroup>
+                       
+                            <GooglePlacesAutocomplete
+                                placeholder='To Location'
+                                minLength={2} // minimum length of text to search
+                                autoFocus={false}
+                                fetchDetails={true}
+                               
+                                onPress={(data, details = null) => { 
+                                  console.log("googleplaces");
+                                  console.log(details);
+                                  this.setState({toLocation:details.name});
+                                  this.setState({toLatitude:details.geometry.location.lat});
+                                  this.setState({toLongtitude:details.geometry.location.lat});
+                                  
+
+
+
+                                }}
+                                getDefaultValue={() => {
+                                  return ''; // text input default value
+                                }}
+                                query={{
+                                  // available options: https://developers.google.com/places/web-service/autocomplete
+                                  key: 'AIzaSyCx4LyiTDnAAgJLnSeVSVKR3uAQPsslXxg',
+                                  language: 'en', // language of the results
+                                  
+                                }}
+                                styles={{
+                                  textInputContainer: {
+                                    backgroundColor: '#696969',
+                                    borderTopWidth: 1,
+                                    borderBottomWidth:1,
+                                     borderRadius: 20,
+                                     borderColor: '#000',
+                                     borderLeftColor: '#000',
+                                     borderRightColor: '#000',
+                                     borderTopColor: '#000',
+                                     borderBottomColor: '#000',
+                                     borderLeftWidth: 1,
+                                     borderRightWidth: 1,
+                                     color: 'black',
+
+                                  },
+
+                                  textInput: {
+                                  backgroundColor: '#696969',
+                                  color: 'black',
+                                  
+                                  },
+                                  
+                                  
+                                  description: {
+                                     backgroundColor: '#696969',
+                                    fontWeight: 'bold',
+                                  },
+                                  predefinedPlacesDescription: {
+                                    color: '#1faadb',
+                                  }, 
+                                  listView:{
+                                    backgroundColor: '#696969',
+                                  },
+                                  poweredContainer: {
+                                backgroundColor: '#696969',
+                                    borderRadius: 30,
+
+                                  },
+                                  container:{
+                                    backgroundColor: '#696969',
+                                     borderRadius: 30,
+                                     borderRightRadius: 25,
+                                     borderLeftRadius: 25,
+                                     borderBottomRadius: 25,
+                                     flex: 3,
+                                     marginLeft: 30, marginRight:30,
+
+                                  
+                                },
+                              }}
+
+                                enablePoweredByContainer = {false}
+                                  // Will add a 'Current location' button at the top of the predefined places list
+                                currentLocationLabel="Current location"
+                                nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                                GoogleReverseGeocodingQuery={{
+                                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                                }}
+                                GooglePlacesSearchQuery={{
+                                  // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                                  rankby: 'distance',
+                                  types: 'food',
+                                }}
+
+
+                                filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  > 
+                            </GooglePlacesAutocomplete>
+                            
                         </View>
                         <View style={{padding: 10}}>
                             <InputGroup  borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
                                   <Icon name='ios-briefcase' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({itemPickup:text})} value={this.state.itemPickup}placeholder="Item:"  placeholderTextColor="#FFFFFF" />
+                                <Input onChangeText={(text) => this.setState({itemPickup:text})} value={this.state.itemPickup}placeholder="Item:"  placeholderTextColor="#000" />
                             </InputGroup>
                         </View>
                         <View style={{padding: 10}}>
                             <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
                                 <Icon name='ios-paper' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({notes:text})} value={this.state.notes}placeholder="Notes:"  placeholderTextColor="#FFFFFF" />
+                                <Input onChangeText={(text) => this.setState({notes:text})} value={this.state.notes}placeholder="Notes:"  placeholderTextColor="#000" />
                             </InputGroup>
                         </View>
         
@@ -398,8 +519,23 @@ class Home extends Component {
 
                   <Button rounded style={styles.formButton} onPress={() => {
 
-              this.createPickup();
-            }}
+                    if (this.state.fromLatitude == 0 ){
+                      console.log("checking position");
+                     
+                      this.state.fromLatitude =  this.state.position.coords.latitude;
+                      this.state.fromLongtitude =  this.state.position.coords.longitude;
+                       console.log(this.state.fromLatitude);
+
+                    }
+
+                    
+
+
+                      this.createPickup();
+                    }
+
+              
+            }
              underlayColor='#99d9f4'>
                     <Text style={styles.buttonText}>Continue</Text>
                   </Button>

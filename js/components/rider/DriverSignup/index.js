@@ -42,6 +42,18 @@ class DriverSignup extends Component {
     replaceRoute(route) {
         this.props.replaceRoute(route);
     } 
+
+    componentDidMount(){
+
+      navigator.geolocation.getCurrentPosition(
+      (position) => this.setState({position}),
+      (error) => alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    navigator.geolocation.watchPosition((position) => {
+      this.setState({position});
+    });
+    }
     
     
     render() {
@@ -111,7 +123,7 @@ class DriverSignup extends Component {
                           </Camera>
                         </View>
                         <View style={styles.regBtnContain}>
-                            <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/verify_phonejson', {
+                            <Button onPress={() => fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/driver_sign_up.json', {
                                                       method: 'POST',
                                                       headers: {
                                                         'Accept': 'application/json',
@@ -126,12 +138,13 @@ class DriverSignup extends Component {
                                                         zip: this.state.zip,
                                                         social_security_number: this.state.social_security_number,
                                                         drivers_license_image: this.state.picture,
+                                                        
 
                                                       })
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
                                                             if (responseJson.success){
-                                                                 this.replaceRoute('home')
+                                                                 this.popRoute('home');
                                                             }
                                                           })
                                                           .catch((error) => {

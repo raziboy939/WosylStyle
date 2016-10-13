@@ -29,10 +29,12 @@ class Register extends Component {
     popRoute() {
         this.props.popRoute();
     }
-    replaceRoute(route) {
-        this.
-        props.replaceRoute(route);
-    } 
+   
+
+     replaceRoute(route, userDetail) {
+       
+        this.props.replaceRoute(route,userDetail);
+    }
 
     
     render() {
@@ -111,7 +113,11 @@ class Register extends Component {
                                                     }) .then((response) => response.json())
                                                           .then((responseJson) => {
                                                             if (responseJson.success){
-                                                                 this.replaceRoute('PhoneVerify',responseJson.user)
+
+                                                                this.setState({userDetail: responseJson.user});
+                                                                console.log("Register User Detail");
+                                                                console.log(this.state.userDetail);
+                                                                 this.replaceRoute('PhoneVerify',this.state.userDetail);
                                                             }
                                                           })
                                                           .catch((error) => {

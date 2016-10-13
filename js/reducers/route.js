@@ -25,10 +25,10 @@ export default function (state:State = initialState, action:Action): State {
 
 if (action.type === SET_USER) {
     console.log("Payload:");
-    console.log(action.payload);
+    console.log(action.user);
     return {
-      ...state,
-      name: action.payload,
+     
+      users: action.users,
     };
   }
 
@@ -69,6 +69,8 @@ if (action.type === SET_USER) {
     
     // console.log("CHECKINGUSERS");
     // console.log(users);
+
+
 
  let users = action.userDetail;
 

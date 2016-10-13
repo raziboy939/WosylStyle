@@ -56,7 +56,7 @@ class createPickup extends Component {
                         <Button transparent  onPress={() => this.popRoute()} >
                             <Icon name='md-arrow-back' style={{fontSize: 28}} />
                         </Button>
-                        <Text style={Platform.OS === 'ios' ? styles.iosHeaderTitle : styles.aHeaderTitle}>Looking For Driver...</Text>
+                        <Text style={Platform.OS === 'ios' ? styles.iosHeaderTitle : styles.aHeaderTitle}>Confirm Details...</Text>
                     </Header>
                    <View  >
               <View >
@@ -99,11 +99,55 @@ class createPickup extends Component {
                  
 
                   <Button rounded style={styles.formButton} onPress={() => {
+                    console.log("checking locations");
+                    console.log(this.props.fromLatitude);
+                    console.log(this.props.toLatitude);
+
+
+                    fetch('http://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/api/pickup/create.json', {
+                                                      method: 'POST',
+                                                      headers: {
+                                                        'Accept': 'application/json',
+                                                        'Content-Type': 'application/json',
+                                                        'X-Auth-Token': this.props.userDetail.access_token,
+                                                      },
+                                                      body: JSON.stringify({
+                                                        pickup_from : this.props.fromLocation,
+                                                        from_latitude: this.props.fromLatitude,
+                                                        from_longitude: this.props.fromLongtitude,
+                                                        pickup_to: this.props.toLocation,
+                                                        to_latitude: this.props.toLatitude,
+                                                        to_longitude: this.props.toLongtitude,
+                                                        item: this.props.itemPickup,
+                                                        notes: this.props.notes,
+
+                                                        
+                                                        
+                                                      })
+                                                    }) .then((response) => response.json())
+                                                          .then((responseJson) => {
+
+                                                            console.log("json worked for create pickup");
+                                                            
+                                                            if (responseJson.success){
+                                                              console.log("create pickup success");
+                                                                 
+                                                            }
+
+                                                            else{
+                                                             
+
+                                                            }
+                                                          })
+                                                          .catch((error) => {
+                                                            console.log("error in jsonResponse from createPickup");
+                                                          })
+
 
               
             }}
              underlayColor='#99d9f4'>
-                    <Text style={styles.buttonText}>Save</Text>
+                    <Text style={styles.buttonText}>Find Driver</Text>
                   </Button>
 
                   
@@ -144,9 +188,15 @@ function mapStateToProps(state) {
         return {
 
           toLocation: state.route.pickup.toLocation,
+          toLatitude: state.route.pickup.toLatitude,
+          toLongtitude: state.route.pickup.toLongtitude,
           fromLocation: state.route.pickup.fromLocation,
+          fromLatitude: state.route.pickup.fromLatitude,
+          fromLongtitude: state.route.pickup.fromLongtitude,
           itemPickup: state.route.pickup.itemPickup,
           notes: state.route.pickup.notes,
+          userDetail: state.route.users,
+
       }
 
     
