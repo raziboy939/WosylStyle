@@ -140,7 +140,7 @@ class Home extends Component {
 
         this.setState({modalVisible: false});
 
-    var pickupItem = {"toLocation" : this.state.toLocation, "toLatitude": this.state.toLatitude, "toLongtitude" : this.state.toLatitude, 
+    var pickupItem = {"toLocation" : this.state.toLocation, "toLatitude": this.state.toLatitude, "toLongtitude" : this.state.toLongtitude, 
     "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude, "itemPickup" : this.state.itemPickup, "notes" : this.state.notes };
     this.props.createPickup('createPickup',pickupItem);
   }
@@ -313,7 +313,7 @@ class Home extends Component {
           console.log(details);
           this.setState({fromLocation:details.name});
           this.setState({fromLatitude:details.geometry.location.lat});
-          this.setState({fromLongtitude:details.geometry.location.lat});
+          this.setState({fromLongtitude:details.geometry.location.lng});
           console.log("from lat and long:");
           console.log(this.state.fromLatitude);
           this.setModalVisible(true);
@@ -417,7 +417,7 @@ class Home extends Component {
                                   console.log(details);
                                   this.setState({toLocation:details.name});
                                   this.setState({toLatitude:details.geometry.location.lat});
-                                  this.setState({toLongtitude:details.geometry.location.lat});
+                                  this.setState({toLongtitude:details.geometry.location.lng});
                                   
 
 
