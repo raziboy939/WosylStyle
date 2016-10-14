@@ -93,7 +93,7 @@ class Home extends Component {
 
 
             animationType: 'none',
-      modalVisible: false,
+      modalVisible: true,
     transparent: false,
     selectedSupportedOrientation: 0,
     currentOrientation: 'unknown',
@@ -141,7 +141,7 @@ class Home extends Component {
         this.setState({modalVisible: false});
 
     var pickupItem = {"toLocation" : this.state.toLocation, "toLatitude": this.state.toLatitude, "toLongtitude" : this.state.toLongtitude, 
-    "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude, "itemPickup" : this.state.itemPickup, "notes" : this.state.notes };
+    "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude};
     this.props.createPickup('createPickup',pickupItem);
   }
   
@@ -249,47 +249,9 @@ class Home extends Component {
 
 
                     </Content>
-                        {(this.state.visible) ?
-                        (<MapView ref={map => { this._map = map; }}
-          style={styles.map}
-          rotateEnabled={true}
-          showsUserLocation={true}
-          attributionButtonIsHidden = {false}
-          logoIsHidden = {true}
-          compassIsHidden = {true}
-          accessToken={'sk.eyJ1Ijoid29zeWwxMjMiLCJhIjoiY2l0NmxxdnJpMDAwNDMwbWZtY21jdmp2NiJ9.H2G2P39VR7kEkEtz0Ji3lw'}
-          initalZoomLevel = {10}
-          centerCoordinate={this.state.center}
-          userLocationVisible={true}
-          userTrackingMode = {Mapbox.userTrackingMode.follow}
-          
-          debugActive={false}
-          direction={this.state.direction}
-          annotations={this.state.annotations}
-          onRegionChange={this.onChange}
-          onOpenAnnotation={this.onOpenAnnotation}
-          onUpdateUserLocation={this.onUpdateUserLocation}/>)
-                        : <View />
-                        }
-                        <Image source={require('../../../../images/dummyMap.png')} style={{height: height, opacity: this.state.opacity}}/>
-                        <View style={styles.pinContainer}>
-                            <Button rounded onPress={() => 
-                              
-                             
-                              this.setModalVisible(true)
-
-
-
-
-                            }
-                             iconRight style={styles.pinButton}>
-                                Create Pickup
-                                <Icon name='ios-arrow-forward' style={{fontSize: 28}} />
-                            </Button>
-
-                            <View style={styles.pin}>
-                            </View>
-                        </View>
+                    <View />
+                        
+                        
 
                     
                     <View style={styles.headerContainer}>
@@ -302,79 +264,11 @@ class Home extends Component {
                         <Title>Wosyl Delivery</Title>
                     </Header>
                     
-                        <GooglePlacesAutocomplete
-        placeholder='Pickup Location'
-        minLength={2} // minimum length of text to search
-        autoFocus={false}
-        fetchDetails={true}
-       
-        onPress={(data, details = null) => { 
-          console.log("googleplaces");
-          console.log(details);
-          this.setState({fromLocation:details.name});
-          this.setState({fromLatitude:details.geometry.location.lat});
-          this.setState({fromLongtitude:details.geometry.location.lng});
-          console.log("from lat and long:");
-          console.log(this.state.fromLatitude);
-          this.setModalVisible(true);
-
-
-
-        }}
-        getDefaultValue={() => {
-          return ''; // text input default value
-        }}
-        query={{
-          // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyCx4LyiTDnAAgJLnSeVSVKR3uAQPsslXxg',
-          language: 'en', // language of the results
-          
-        }}
-        styles={{
-          description: {
-            fontWeight: 'bold',
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-          }, listView:{
-            backgroundColor: 'rgba(255, 253, 249, 1)'
-          },
-          poweredContainer: {
-            backgroundColor: 'rgba(255, 253, 249, 1)'
-          },
-          container:{
-             backgroundColor: 'rgba(255, 253, 249, 1)',
-             borderRadius: 30,
-             borderRightRadius: 25,
-             borderLeftRadius: 25,
-             borderBottomRadius: 25,
-          
-        },
-      }}
-
-        enablePoweredByContainer = {false}
-        currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-        currentLocationLabel="Current location"
-        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-        GoogleReverseGeocodingQuery={{
-          // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        }}
-        GooglePlacesSearchQuery={{
-          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          rankby: 'distance',
-          types: 'food',
-        }}
-
-
-        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  > </GooglePlacesAutocomplete>
+        
         
         <View style={{marginTop: 5}}>
        
-          <Modal
-            animationType={"slide"}
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {alert("Modal has been closed.")}} >
+         
             
              
               
@@ -385,25 +279,115 @@ class Home extends Component {
                 
 
                  <View style={{padding: 10}}>
-                 <Button transparent style={{height: 10, marginBottom: 10}} onPress={() => {
-
-             this.setModalVisible(false);
-            }}
-             underlayColor='#99d9f4'>
-                    <Text style={styles.buttonText}>close</Text>
-                  </Button>
+                
 
 
                   <View style ={styles.progressBar}>
                     <ProgressViewIOS  progress={this.state.progress}/>
                   </View>
                   
-                  <Text style={styles.buttonText2}>Pick up Info</Text>
-                  <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                    <Icon name='ios-home' style={{color:'#16ADD4'}}/>
-                    <Input onChangeText={(text) => this.setState({fromLocation:text})} autoCapitalize="none" value={this.state.fromLocation}placeholder="From: Address" placeholderTextColor="#FFFFFF" />
-                 </InputGroup>
+                  <Text style={styles.buttonText2}>Home</Text>
+                 
                </View>
+
+               <View style={{padding: 10}}>
+                       
+                            <GooglePlacesAutocomplete
+                                placeholder='From Location'
+                                minLength={2} // minimum length of text to search
+                                autoFocus={false}
+                                fetchDetails={true}
+                               
+                                onPress={(data, details = null) => { 
+                                  console.log("googleplaces");
+                                  console.log(details);
+                                  this.setState({fromLocation:details.name});
+                                  this.setState({fromLatitude:details.geometry.location.lat});
+                                  this.setState({fromLongtitude:details.geometry.location.lng});
+                                  
+
+
+
+                                }}
+                                getDefaultValue={() => {
+                                  return ''; // text input default value
+                                }}
+                                query={{
+                                  // available options: https://developers.google.com/places/web-service/autocomplete
+                                  key: 'AIzaSyCx4LyiTDnAAgJLnSeVSVKR3uAQPsslXxg',
+                                  language: 'en', // language of the results
+                                  
+                                }}
+                                styles={{
+                                  textInputContainer: {
+                                    backgroundColor: '#696969',
+                                    borderTopWidth: 1,
+                                    borderBottomWidth:1,
+                                     borderRadius: 20,
+                                     borderColor: '#000',
+                                     borderLeftColor: '#000',
+                                     borderRightColor: '#000',
+                                     borderTopColor: '#000',
+                                     borderBottomColor: '#000',
+                                     borderLeftWidth: 1,
+                                     borderRightWidth: 1,
+                                     color: 'black',
+
+                                  },
+
+                                  textInput: {
+                                  backgroundColor: '#696969',
+                                  color: 'black',
+                                  
+                                  },
+                                  
+                                  
+                                  description: {
+                                     backgroundColor: '#696969',
+                                    fontWeight: 'bold',
+                                  },
+                                  predefinedPlacesDescription: {
+                                    color: '#1faadb',
+                                  }, 
+                                  listView:{
+                                    backgroundColor: '#696969',
+                                  },
+                                  poweredContainer: {
+                                backgroundColor: '#696969',
+                                    borderRadius: 30,
+
+                                  },
+                                  container:{
+                                    backgroundColor: '#696969',
+                                     borderRadius: 30,
+                                     borderRightRadius: 25,
+                                     borderLeftRadius: 25,
+                                     borderBottomRadius: 25,
+                                     flex: 3,
+                                     marginLeft: 30, marginRight:30,
+
+                                  
+                                },
+                              }}
+
+                                enablePoweredByContainer = {false}
+                                  // Will add a 'Current location' button at the top of the predefined places list
+                                currentLocationLabel="Current location"
+                                nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                                GoogleReverseGeocodingQuery={{
+                                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                                }}
+                                GooglePlacesSearchQuery={{
+                                  // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                                  rankby: 'distance',
+                                  types: 'food',
+                                }}
+
+
+                                filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  > 
+                            </GooglePlacesAutocomplete>
+                            
+                        </View>
                         <View style={{padding: 10}}>
                        
                             <GooglePlacesAutocomplete
@@ -502,18 +486,7 @@ class Home extends Component {
                             </GooglePlacesAutocomplete>
                             
                         </View>
-                        <View style={{padding: 10}}>
-                            <InputGroup  borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                                  <Icon name='ios-briefcase' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({itemPickup:text})} value={this.state.itemPickup}placeholder="Item:"  placeholderTextColor="#000" />
-                            </InputGroup>
-                        </View>
-                        <View style={{padding: 10}}>
-                            <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                                <Icon name='ios-paper' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({notes:text})} value={this.state.notes}placeholder="Notes:"  placeholderTextColor="#000" />
-                            </InputGroup>
-                        </View>
+                        
         
                  
 
@@ -546,7 +519,7 @@ class Home extends Component {
               </View>
             </View>
             
-          </Modal>
+         
           
         </View>
          

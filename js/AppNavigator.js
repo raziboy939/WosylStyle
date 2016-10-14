@@ -19,6 +19,7 @@ import Register from './components/rider/register/';
 import DriverSignup from './components/rider/DriverSignup/';
 import Home from './components/rider/home/';
 import CreatePickup from './components/rider/createPickup/';
+import PlaceOrder from './components/rider/placeOrder/';
 import SplashPage from './components/splashscreen/';
 import SideBar from './components/rider/sideBar';
 import Payment from './components/rider/payment';
@@ -217,6 +218,8 @@ class AppNavigator extends Component {
                 return <LoadingOverlay navigator={navigator} />;
             case 'createPickup':
                 return <CreatePickup navigator={navigator} />;
+            case 'placeOrder':
+                return <PlaceOrder navigator={navigator} />;
             default :
                 return <Login navigator={navigator}  />;
         }

@@ -167,7 +167,7 @@ module.exports = StyleSheet.create({
     textAlign: 'center'
   },
   modalStyle: {
-    marginTop:140,
+    marginTop:10,
     backgroundColor: '#696969'
   },
   progressBar: {
