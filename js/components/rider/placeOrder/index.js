@@ -24,7 +24,7 @@ class placeOrder extends Component {
       super(props);
 
       this.state ={
-        progress: 0.5,
+        progress: 0.75,
         open: false,
         phone_code: '',
       fromLocation: '',
@@ -42,6 +42,8 @@ class placeOrder extends Component {
     replaceRoute(route) {
         this.props.replaceRoute(route);
     } 
+
+    
     
     
     render() {
@@ -71,34 +73,39 @@ class placeOrder extends Component {
                   </View>
 
 
-                  <View style={{paddingT: 20}}>
-                   <View style={{padding: 10}}>
+                  <View style={{paddingTop: 20}}>
+                   
                    
                     
-                    <Text style={styles.buttonText2}>Item Details</Text>
-                    <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                      <Icon name='ios-home' style={{color:'#16ADD4'}}/>
-                      <Input onChangeText={(text) => this.setState({fromLocation:text})} autoCapitalize="none" value={this.state.fromLocation}placeholder={this.props.fromLocation} placeholderTextColor="#000" />
-                    </InputGroup>
-                  </View>
-                        <View style={{padding: 10}}>
-                            <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                                <Icon name='md-log-out' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({toLocation:text})} value={this.state.toLocation}placeholder={this.props.toLocation} placeholderTextColor="#000" />
-                            </InputGroup>
-                        </View>
-                        <View style={{padding: 10}}>
-                            <InputGroup  borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                                  <Icon name='ios-briefcase' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({itemPickup:text})} value={this.state.itemPickup}placeholder={this.props.itemPickup}  placeholderTextColor="#000" />
-                            </InputGroup>
-                        </View>
-                        <View style={{padding: 10}}>
-                            <InputGroup borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
-                                <Icon name='ios-paper' style={{color:'#16ADD4'}}/>
-                                <Input onChangeText={(text) => this.setState({notes:text})} value={this.state.notes}placeholder={this.props.notes}  placeholderTextColor="#000" />
-                            </InputGroup>
-                        </View>
+                    <Text style={styles.buttonText2}>Order Details</Text>
+
+                    <View style={{padding: 10}}>
+
+                    <Text style={{marginLeft: 30, marginRight:30}}>From: {this.props.fromLocation}</Text>
+                    </View>
+
+                     <View style={{padding: 10}}>
+
+                    <Text style={{marginLeft: 30, marginRight:30}}>To: {this.props.toLocation}</Text>
+                    </View>
+
+                     <View style={{padding: 10}}>
+
+                    <Text style={{marginLeft: 30, marginRight:30}}>Item: {this.props.itemPickup}</Text>
+                    </View>
+
+                     <View style={{padding: 10}}>
+
+                    <Text style={{marginLeft: 30, marginRight:30}}>Notes: {this.props.notes}</Text>
+                    </View>
+
+                    <View style={{padding: 10}}>
+
+                    <Text style={{marginLeft: 30, marginRight:30}}>Estimated cost: $3 Base Fee + {this.props.distance} miles x $1 per mile = ${this.props.cost}</Text>
+                    </View>
+
+
+                 
                     </View>
         
                  
@@ -154,7 +161,7 @@ class placeOrder extends Component {
               
             }}
              underlayColor='#99d9f4'>
-                    <Text style={styles.buttonText}>Next</Text>
+                    <Text style={styles.buttonText}>Place Order</Text>
                   </Button>
 
                   
@@ -190,10 +197,40 @@ function mapStateToProps(state) {
     console.log("checkingpickupset");
     console.log(state);
     if (state.route.pickup){
+
+       var rad = function(x){
+
+      return x * Math.PI / 180;
+      }
+
+       var getDistance = function (p1,p2){
+          var R = 6378137; // Earth’s mean radius in meter
+      var dLat = rad(p2.lat - p1.lat);
+      var dLong = rad(p2.lng - p1.lng);
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c;
+      return Math.round((d * 0.00062137)).toString(); // returns the distance in miles.
+        }
+
+
+      var p1 = {"lat": state.route.pickup.fromLatitude, "lng": state.route.pickup.fromLongtitude};
+      var p2 = {"lat": state.route.pickup.toLatitude, "lng": state.route.pickup.toLongtitude};
+      var distance = getDistance(p1,p2);
+      var cost = (parseInt(distance) + 3).toString();
+
+      if(state.route.pickup.notes == ""){
+        var notes = "N/A"
+      }
+      else {
+        var notes = state.route.pickup.notes;
+      }
       
 
         return {
 
+          cost: cost,
+          distance: distance,
           toLocation: state.route.pickup.toLocation,
           toLatitude: state.route.pickup.toLatitude,
           toLongtitude: state.route.pickup.toLongtitude,
@@ -201,7 +238,7 @@ function mapStateToProps(state) {
           fromLatitude: state.route.pickup.fromLatitude,
           fromLongtitude: state.route.pickup.fromLongtitude,
           itemPickup: state.route.pickup.itemPickup,
-          notes: state.route.pickup.notes,
+          notes: notes,
           userDetail: state.route.users,
           
 

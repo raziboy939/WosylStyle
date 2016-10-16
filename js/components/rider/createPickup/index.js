@@ -77,12 +77,21 @@ class CreatePickup extends Component {
                  
 
 
+                  
+                 <View style={{padding: 10}}>
+                
+
+
                   <View style ={styles.progressBar}>
                     <ProgressViewIOS  progress={this.state.progress}/>
                   </View>
+                  
+                  <Text style={styles.buttonText2}>Item Details</Text>
+                 
+               </View>
 
 
-                  <View style={{paddingT: 20}}>
+                  <View >
                   
                         <View style={{padding: 10}}>
                             <InputGroup  borderType='rounded' style={{marginLeft: 30, marginRight:30}}>
