@@ -14,6 +14,7 @@ export const RESET_ROUTE = "RESET_ROUTE";
 export const POP_TO_ROUTE = "POP_TO_ROUTE";
 export const SET_USER = 'SET_USER';
 export const CREATE_PICKUP = "CREATE_PICKUP";
+export const CREATE_SESSION = "CREATE_SESSION";
 
 
 export function replaceRoute(route:string, userDetail):Action {
@@ -27,6 +28,15 @@ export function replaceRoute(route:string, userDetail):Action {
 export function createPickup(route:string, pickup: object):Action {
   return {
     type: CREATE_PICKUP,
+    route: route,
+    pickup: pickup,
+  }
+
+}
+
+export function createSession(route:string, pickup: object):Action {
+  return {
+    type: CREATE_SESSION,
     route: route,
     pickup: pickup,
   }

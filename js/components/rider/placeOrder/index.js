@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { View, Dimensions,StatusBar,Platform,  ProgressViewIOS} from 'react-native';
 
 import { popRoute,replaceRoute } from '../../../actions/route';
+import { createSession } from '../../../actions/route';
 
 import { Container, Header, Text, Button, Icon, InputGroup, Input } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
@@ -42,6 +43,10 @@ class placeOrder extends Component {
     replaceRoute(route) {
         this.props.replaceRoute(route);
     } 
+
+    createSession(response){
+      this.props.createSession('inSession',response);
+    }
 
     
     
@@ -143,6 +148,8 @@ class placeOrder extends Component {
                                                             
                                                             if (responseJson.success){
                                                               console.log("create pickup success");
+                                                              console.log(responseJson);
+                                                               this.createSession(responseJson);
                                                                  
                                                             }
 
@@ -153,9 +160,7 @@ class placeOrder extends Component {
 
                                                             }
                                                           })
-                                                          .catch((error) => {
-                                                            console.log("error in jsonResponse from createPickup");
-                                                          })
+                                                          
 
 
               
@@ -189,7 +194,8 @@ class placeOrder extends Component {
 function bindActions(dispatch){
     return {
         popRoute: () => dispatch(popRoute()),
-        replaceRoute:(route)=>dispatch(replaceRoute(route))
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        createSession: (route,pickup) =>dispatch(createSession(route,pickup))
     }
 }
 function mapStateToProps(state) {

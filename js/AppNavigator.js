@@ -20,6 +20,7 @@ import DriverSignup from './components/rider/DriverSignup/';
 import Home from './components/rider/home/';
 import CreatePickup from './components/rider/createPickup/';
 import PlaceOrder from './components/rider/placeOrder/';
+import InSession from './components/rider/inSession/';
 import SplashPage from './components/splashscreen/';
 import SideBar from './components/rider/sideBar';
 import Payment from './components/rider/payment';
@@ -220,6 +221,8 @@ class AppNavigator extends Component {
                 return <CreatePickup navigator={navigator} />;
             case 'placeOrder':
                 return <PlaceOrder navigator={navigator} />;
+             case 'inSession':
+                return <InSession navigator={navigator} />;
             default :
                 return <Login navigator={navigator}  />;
         }

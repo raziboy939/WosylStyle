@@ -80,12 +80,14 @@ class SignIn extends Component {
                         
                       </View>
                         <View style={{padding: 10}}>
-                            <InputGroup>
+                            <InputGroup borderType="rounded" style={{marginLeft:20,marginRight:20}}>
+                                <Icon name='ios-contact' style={{color:'#16ADD4'}}/>
                                 <Input borderType='rounded' onChangeText={(text) => this.setState({email:text})} autoCapitalize="none" value={this.state.email}placeholder="Email Address" placeholderTextColor="#797979" />
                             </InputGroup>
                         </View>
                         <View style={{padding: 10}}>
-                            <InputGroup>
+                            <InputGroup borderType="rounded" style={{marginLeft:20,marginRight:20}}>
+                            <Icon name='ios-lock' style={{color:'#16ADD4'}}/>
                                 <Input borderType='rounded' onChangeText={(text) => this.setState({password:text})} value={this.state.password}placeholder="Password" secureTextEntry={true} placeholderTextColor="#797979" />
                             </InputGroup>
                         </View>
@@ -157,9 +159,9 @@ class SignIn extends Component {
                                                             console.error(error);
                                                           })
 
-                              }    block style={styles.regBtn}>
+                              }    block style={{marginLeft:20,marginRight:20}} >
                                   
-                                    <Text style={{color: '#fff',fontWeight: '600'}}>SIGN IN</Text>
+                                    <Text style={{fontWeight: '600',color: '#fff'}}>SIGN IN</Text>
                                 </Button>
                         </View>
 

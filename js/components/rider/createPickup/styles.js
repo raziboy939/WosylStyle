@@ -20,10 +20,25 @@ module.exports = StyleSheet.create({
     elevation: 3,
     paddingTop: 25
   },
+  container: {
+    flex: 1,
+    position: 'relative',
+    
+  },
+  container2: {
+    flex: 2,
+    position: 'relative',
+    backgroundColor: '#696969'
+  },
   iosHeaderTitle: {
     fontSize: 18,
     fontWeight: '500'
  },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    width: deviceWidth
+  },
  aHeaderTitle: {
     fontSize: 18,
     fontWeight: '500',
@@ -49,7 +64,7 @@ module.exports = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     alignSelf: 'center'
   },
   buttonText2: {
@@ -66,17 +81,38 @@ module.exports = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   formButton: {
-    height: 24,
+    
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     
-    alignSelf: 'stretch',
+   
     justifyContent: 'center',
-    marginLeft: 30, 
-    marginRight: 30,
-    marginTop: 20,
-    marginBottom: 20
+
+    
   },
+  map: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#fff'
+  },
+  modalStyle: {
+    marginTop:40,
+    position: 'relative',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 300,
+    backgroundColor: '#428bca'
+
+    
+  },
+  progressBar: {
+    paddingLeft:30,
+    paddingRight:30
+  }
  
 
 });

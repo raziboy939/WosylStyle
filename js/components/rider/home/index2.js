@@ -4,12 +4,21 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import { Image, View, Dimensions, Platform, StatusBar } from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {BlurView} from 'react-native-blur';
+import LoadingOverlay from '../LoadingOverlay';
+import AwesomeButton from 'react-native-awesome-button';
 
+import { Image, View, Dimensions, Platform, StatusBar, Switch, Slider, DatePickerIOS, Picker, PickerIOS, ProgressViewIOS } from 'react-native';
+var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+import { Modal, TouchableHighlight} from 'react-native';
+
+
+import Form from 'react-native-form'
 
 import { pushNewRoute } from '../../../actions/route';
+import { createPickup } from '../../../actions/route';
 import { openDrawer } from '../../../actions/drawer';
+
 
 import { Header, Content, Text, Button, Icon, Card, Title, InputGroup, Input } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
@@ -24,6 +33,7 @@ import theme from '../../../themes/base-theme';
 
 
 var { width, height } = Dimensions.get('window');
+
 const ASPECT_RATIO = width / height;
 const LATITUDE = 12.920614;
 const LONGITUDE = 77.586234;
@@ -33,12 +43,33 @@ const SPACE = 0.01;
 
 
 
+
+
+
+
+
+
 class Home extends Component {
 
     pushNewRoute(route) {
          this.props.pushNewRoute(route);
        }
+
+
+ 
+
+
        
+        static propTypes = {
+    first_name: React.PropTypes.string,
+   
+    last_name: React.PropTypes.string,
+    email: React.PropTypes.string,
+    phone_no: React.PropTypes.string,
+    list: React.PropTypes.arrayOf(React.PropTypes.string),
+  }
+
+  
 
 
 
@@ -49,7 +80,23 @@ class Home extends Component {
         
           this.state = {
 
-            tripDetails: [],
+            progress: 0.25,
+             isVisible: false,
+            fromLocation: 'From: Current Location',
+            fromLatitude: 0,
+            fromLongtitude: 0,
+            toLocation: '',
+            toLatitude: 0,
+            toLongtitude: 0,
+            itemPickup: '',
+            notes: '',
+
+
+            animationType: 'none',
+      modalVisible: true,
+    transparent: false,
+    selectedSupportedOrientation: 0,
+    currentOrientation: 'unknown',
             opacity: 1,
             visible: false,
             uberPoolSelect: true,
@@ -75,18 +122,40 @@ class Home extends Component {
         };
 
          console.log("ON HOME PAGE STATE2: ");
-    connect(state => ({
-  userDetails: state.users
-}));
-    console.log(this.props.userDetails);
+//     connect(state => ({
+//   userDetails: state.users
+// }));
+    console.log(this.props.users);
         this.uberPool = this.uberPool.bind(this);
         this.uberGo = this.uberGo.bind(this);
         this.uberX = this.uberX.bind(this);
         this.uberXL = this.uberXL.bind(this);
     }
+
+
+ setModalVisible (visible) {
+    this.setState({modalVisible: visible});
+  }
+ createPickup(){
+
+        this.setState({modalVisible: false});
+
+    var pickupItem = {"toLocation" : this.state.toLocation, "toLatitude": this.state.toLatitude, "toLongtitude" : this.state.toLongtitude, 
+    "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude};
+    this.props.createPickup('createPickup',pickupItem);
+  }
+  
+
+
+    
+
+
+
+
+
     componentDidMount() {
 
-      
+
 
             navigator.geolocation.getCurrentPosition(
       (position) => this.setState({position}),
@@ -138,6 +207,8 @@ class Home extends Component {
        direction: 0
      }
   }
+
+   
   onChange(e) {
     this.setState({ mapLocation: e });
   }
@@ -147,6 +218,8 @@ class Home extends Component {
   onUpdateUserLocation (location) {
     console.log(location)
   }
+
+   
 
 
     onDidFocus(){
@@ -168,201 +241,318 @@ class Home extends Component {
         return (
                  
                 <View style={styles.container}>
-                    <StatusBar barStyle='default' />
-                    <Content theme={theme}>
-                    
+                  <StatusBar barStyle='default' />
+                  <Content theme={theme}>
+                  </Content>
 
-                    
-
-
-                    </Content>
+                  <View style={styles.map}>
                         {(this.state.visible) ?
                         (<MapView ref={map => { this._map = map; }}
-          style={styles.map}
-          rotateEnabled={true}
-          showsUserLocation={true}
-          accessToken={'sk.eyJ1Ijoid29zeWwxMjMiLCJhIjoiY2l0NmxxdnJpMDAwNDMwbWZtY21jdmp2NiJ9.H2G2P39VR7kEkEtz0Ji3lw'}
-          initalZoomLevel = {10}
-          centerCoordinate={this.state.center}
-          userLocationVisible={true}
-          userTrackingMode = {Mapbox.userTrackingMode.follow}
-          
-          debugActive={false}
-          direction={this.state.direction}
-          annotations={this.state.annotations}
-          onRegionChange={this.onChange}
-          onOpenAnnotation={this.onOpenAnnotation}
-          onUpdateUserLocation={this.onUpdateUserLocation}/>)
+                            style={styles.map}
+                            rotateEnabled={true}
+                            showsUserLocation={true}
+                            attributionButtonIsHidden = {false}
+                            logoIsHidden = {true}
+                            compassIsHidden = {true}
+                            accessToken={'sk.eyJ1Ijoid29zeWwxMjMiLCJhIjoiY2l0NmxxdnJpMDAwNDMwbWZtY21jdmp2NiJ9.H2G2P39VR7kEkEtz0Ji3lw'}
+                            initalZoomLevel = {10}
+                            centerCoordinate={this.state.center}
+                            userLocationVisible={true}
+                            userTrackingMode = {Mapbox.userTrackingMode.follow}
+                            
+                            debugActive={false}
+                            direction={this.state.direction}
+                            annotations={this.state.annotations}
+                            onRegionChange={this.onChange}
+                            onOpenAnnotation={this.onOpenAnnotation}
+                            onUpdateUserLocation={this.onUpdateUserLocation}/>)
                         : <View />
                         }
-                        <Image source={require('../../../../images/dummyMap.png')} style={{height: height, opacity: this.state.opacity}}/>
-                        <View style={styles.pinContainer}>
-                            <Button rounded onPress={() => this.pushNewRoute('confirmRide')} iconRight style={styles.pinButton}>
-                                SET PICKUP LOCATION
-                                <Icon name='ios-arrow-forward' style={{fontSize: 28}} />
-                            </Button>
-
-                            <View style={styles.pin}>
-                            </View>
-                        </View>
-
-                    <View style={styles.slideSelector}>
-                        {this.state.uberPoolSelect === true &&
-                        <View style={styles.shareContainer}>
-                            <Grid>
-                                <Col style={[styles.shareOptions, {width: width/1.4}]}><Text style={{color: '#555'}}>Share your car and save upto<Text style={styles.shareType}> 50%</Text></Text>
-                                </Col>
-                                <Col style={styles.share}><Text style={{fontSize: 15,color: '#555'}}>1-2 people</Text></Col>
-                            </Grid>
-                        </View>
-                        }
-                        {this.state.uberGoSelect === true &&
-                        <View style={styles.shareContainer}>
-                            <Grid style={{justifyContent: 'center'}}>
-                                <Col style={[styles.shareOptions, {width: width/1.4}]}><Text style={{color: '#555'}}>SELECT<Text style={styles.shareType}> TAXIPOOL</Text> NEXT</Text></Col>
-                                <Col style={styles.share}><Text style={{fontSize: 9,color: '#555',fontWeight: '600'}}>SAVE UPTO 50%</Text></Col>
-                            </Grid>
-                        </View>
-                        }
-                        <Grid>
-                            <Col style={styles.taxiTypeContainer} >
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiPool</Text>
-                                </Row>
-                                <Row style={this.state.uberPoolSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberPoolSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberPoolSelect === false ? 'ios-radio-button-off' : 'ios-people' } style={this.state.uberPoolSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberPool.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-                            <Col style={styles.taxiTypeContainer}>
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiGO</Text>
-                                </Row>
-                                <Row style={this.state.uberGoSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberGoSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberGoSelect === false ? 'ios-radio-button-off' : 'ios-car' } style={this.state.uberGoSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberGo.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-                            <Col style={styles.taxiTypeContainer}>
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiX</Text>
-                                </Row>
-                                <Row style={this.state.uberXSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberXSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberXSelect === false ? 'ios-radio-button-off' : 'ios-car' } style={this.state.uberXSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberX.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-                            <Col style={styles.taxiTypeContainer}>
-                                <Row>
-                                <Text style={{color: '#555'}}>TaxiXL</Text>
-                                </Row>
-                                <Row style={this.state.uberXLSelect === true ? styles.taxiType : {}}>
-                                    <View style={this.state.uberXLSelect === true ? styles.taxi : {}}>
-                                        <Icon name={this.state.uberXLSelect === false ? 'ios-radio-button-off' : 'ios-car' } style={this.state.uberXLSelect === false ? styles.taxiIcon : {fontSize: 25}} onPress={this.uberXL.bind(this)} />
-                                    </View>
-                                </Row>
-                            </Col>
-
-                        </Grid>
                     </View>
-                    <View style={styles.headerContainer}>
-                    <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
-                        <Button transparent  onPress={this.props.openDrawer} >
-                            <Icon name='ios-menu' />
-                        </Button>
-                        <Title>Wosyl Delivery</Title>
-                    </Header>
                     
-                        <GooglePlacesAutocomplete
-        placeholder='Search'
-        minLength={2} // minimum length of text to search
-        autoFocus={false}
-        fetchDetails={true}
-       
-        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-          // console.log(data);
-          // console.log(details);
-          console.log("SETTING NEW STATE");
-         
-           console.log(this.props.state);
+                  <View style={styles.headerContainer}>
+                       <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
+                           <Button transparent  onPress={ this.props.openDrawer
 
-           this.pushNewRoute('confirmRide');
+                           } >
+                               <Icon name='ios-menu' />
+                           </Button>
+                           <Title>Wosyl Delivery</Title>
+                       </Header>
+                    
+                     </View>
         
+                  
+                     <View style={styles.modalStyle}>
+               
+                       
+               
+
+                        <View style={{padding: 10}}>
+                       
+                           <GooglePlacesAutocomplete
+                                placeholder='From Location'
+                                minLength={2} // minimum length of text to search
+                                autoFocus={false}
+                                fetchDetails={true}
+                               
+                                onPress={(data, details = null) => { 
+                                  console.log("googleplaces");
+                                  console.log(details);
+                                  this.setState({fromLocation:details.name});
+                                  this.setState({fromLatitude:details.geometry.location.lat});
+                                  this.setState({fromLongtitude:details.geometry.location.lng});
+                                  
 
 
 
+                                }}
+                                getDefaultValue={() => {
+                                  return ''; // text input default value
+                                }}
+                                query={{
+                                  // available options: https://developers.google.com/places/web-service/autocomplete
+                                  key: 'AIzaSyCx4LyiTDnAAgJLnSeVSVKR3uAQPsslXxg',
+                                  language: 'en', // language of the results
+                                  
+                                }}
+                                 styles={{
+                                  textInputContainer: {
+                                    backgroundColor: '#fff',
+                                    borderTopWidth: 1,
+                                    borderBottomWidth:1,
+                                     borderRadius: 20,
+                                     borderColor: '#000',
+                                     borderLeftColor: '#000',
+                                     borderRightColor: '#000',
+                                     borderTopColor: '#000',
+                                     borderBottomColor: '#000',
+                                     borderLeftWidth: 1,
+                                     borderRightWidth: 1,
+                                     color: 'black',
 
-        }}
-        getDefaultValue={() => {
-          return ''; // text input default value
-        }}
-        query={{
-          // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyCx4LyiTDnAAgJLnSeVSVKR3uAQPsslXxg',
-          language: 'en', // language of the results
-          
-        }}
-        styles={{
-          description: {
-            fontWeight: 'bold',
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-          }, listView:{
-            backgroundColor: 'rgba(255, 253, 249, 1)'
-          },
-          poweredContainer: {
-            backgroundColor: 'rgba(255, 253, 249, 1)'
-          },
-          container:{
-            backgroundColor: 'rgba(255, 253, 249, 1)'
-          
-        },
-      }}
+                                  },
+
+                                  textInput: {
+                                  backgroundColor: '#fff',
+                                  color: 'black',
+                                  
+                                  },
+                                  
+                                  
+                                  description: {
+                                     backgroundColor: '#fff',
+                                    fontWeight: 'bold',
+                                  },
+                                  predefinedPlacesDescription: {
+                                    color: '#1faadb',
+                                  }, 
+                                  listView:{
+                                    backgroundColor: '#fff',
+                                  },
+                                  poweredContainer: {
+                               
+                                    borderRadius: 30,
+
+                                  },
+                                  container:{
+                                    
+                                     borderRadius: 30,
+                                     borderRightRadius: 25,
+                                     borderLeftRadius: 25,
+                                     borderBottomRadius: 25,
+                                     flex: 3,
+                                     marginLeft: 30, marginRight:30,
+
+                                  
+                                },
+                              }}
+                                enablePoweredByContainer = {false}
+                                  // Will add a 'Current location' button at the top of the predefined places list
+                                currentLocationLabel="Current location"
+                                nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                                GoogleReverseGeocodingQuery={{
+                                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                                }}
+                                GooglePlacesSearchQuery={{
+                                  // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                                  rankby: 'distance',
+                                  types: 'food',
+                                }}
 
 
-        currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-        currentLocationLabel="Current location"
-        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-        GoogleReverseGeocodingQuery={{
-          // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        }}
-        GooglePlacesSearchQuery={{
-          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          rankby: 'distance',
-          types: 'food',
-        }}
+                                filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  > 
+                            </GooglePlacesAutocomplete>
+                            
+                        </View>
+                        <View style={{padding: 10}}>
+                       
+                            <GooglePlacesAutocomplete
+                                placeholder='To Location'
+                                minLength={2} // minimum length of text to search
+                                autoFocus={false}
+                                fetchDetails={true}
+                               
+                                onPress={(data, details = null) => { 
+                                  console.log("googleplaces");
+                                  console.log(details);
+                                  this.setState({toLocation:details.name});
+                                  this.setState({toLatitude:details.geometry.location.lat});
+                                  this.setState({toLongtitude:details.geometry.location.lng});
+                                  
 
 
-        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  />
-                   
-                    </View>
+
+                                }}
+                                getDefaultValue={() => {
+                                  return ''; // text input default value
+                                }}
+                                query={{
+                                  // available options: https://developers.google.com/places/web-service/autocomplete
+                                  key: 'AIzaSyCx4LyiTDnAAgJLnSeVSVKR3uAQPsslXxg',
+                                  language: 'en', // language of the results
+                                  
+                                }}
+                                styles={{
+                                  textInputContainer: {
+                                    backgroundColor: '#fff',
+                                    borderTopWidth: 1,
+                                    borderBottomWidth:1,
+                                     borderRadius: 20,
+                                     borderColor: '#000',
+                                     borderLeftColor: '#000',
+                                     borderRightColor: '#000',
+                                     borderTopColor: '#000',
+                                     borderBottomColor: '#000',
+                                     borderLeftWidth: 1,
+                                     borderRightWidth: 1,
+                                     color: 'black',
+
+                                  },
+
+                                  textInput: {
+                                  backgroundColor: '#fff',
+                                  color: 'black',
+                                  
+                                  },
+                                  
+                                  
+                                  description: {
+                                     backgroundColor: '#fff',
+                                    fontWeight: 'bold',
+                                  },
+                                  predefinedPlacesDescription: {
+                                    color: '#1faadb',
+                                  }, 
+                                  listView:{
+                                    backgroundColor: '#fff',
+                                  },
+                                  poweredContainer: {
+                                
+                                    borderRadius: 30,
+
+                                  },
+                                  container:{
+                                    
+                                     borderRadius: 30,
+                                     borderRightRadius: 25,
+                                     borderLeftRadius: 25,
+                                     borderBottomRadius: 25,
+                                     flex: 3,
+                                     marginLeft: 30, marginRight:30,
+
+                                  
+                                },
+                              }}
+
+                                enablePoweredByContainer = {false}
+                                  // Will add a 'Current location' button at the top of the predefined places list
+                                currentLocationLabel="Current location"
+                                nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                                GoogleReverseGeocodingQuery={{
+                                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+                                }}
+                                GooglePlacesSearchQuery={{
+                                  // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                                  rankby: 'distance',
+                                  types: 'food',
+                                }}
+
+
+                                filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}  > 
+                            </GooglePlacesAutocomplete>
+                            
+                        </View>
+                        <View style={{padding: 10}}>
+                        <Button rounded transparent bordered block style={{marginLeft: 30, marginRight:30, borderColor:'#fff'}}  onPress={() => {
+                                       if (this.state.fromLatitude == 0 ){
+                                           
+                                        this.state.fromLatitude =  this.state.position.coords.latitude;
+                                        this.state.fromLongtitude =  this.state.position.coords.longitude;
+                                        console.log(this.state.fromLatitude);
+                                     }
+
+                                     console.log("checking center");   
+                                       console.log(this.state.center);   
+                                     this.createPickup();
+                                      
+                                  }
+                               }
+                               underlayColor='#99d9f4'>
+                               <Text style={styles.buttonText}>Continue</Text>
+                        </Button>
+                        </View>
+                     </View>
+                 
                 </View>
+                
+               
         )
     }
 }
 
+ 
 
 
-
-function bindActions(dispatch){
+function bindAction(dispatch) {
     return {
-        openDrawer: ()=>dispatch(openDrawer()),
-        pushNewRoute:(route)=>dispatch(pushNewRoute(route))
+      openDrawer: ()=>dispatch(openDrawer()),
+        closeDrawer: ()=>dispatch(closeDrawer()),
+        replaceOrPushRoute:(route)=>dispatch(replaceOrPushRoute(route)),
+        resetRoute:(route)=>dispatch(resetRoute(route)),
+        replaceRoute:(route)=>dispatch(replaceRoute(route)),
+        createPickup: (route,pickup) =>dispatch(createPickup(route,pickup)),
     }
 }
+
 function mapStateToProps(state) {
-  return {
-    name: state.name,
+
+    console.log("checkinguserset");
+    console.log(state);
+    if (state.route.users){
+        return {
+    first_name: state.route.users.first_name,
+    last_name: state.route.users.last_name,
+    email: state.route.users.email,
+    phone_no: state.route.users.phone_no,
+
     
-  };
+  }
+    }
+ 
+
+    else{
+  return {
+    first_name: "first Name",
+    last_name: "lastname",
+    email: "email",
+    phone_no: "phone number",
+    
+  }
+}
 }
 
-export default connect(mapStateToProps, bindActions)(Home);
 
 
 
-
+export default connect(mapStateToProps, bindAction)(Home);

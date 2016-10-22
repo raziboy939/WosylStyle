@@ -39,10 +39,10 @@ class Login extends Component {
                     <View style={{padding: 10}}>
                         <Grid>
                             <Col style={{padding: 10}}>
-                            <Button  onPress={() => this.pushNewRoute('signIn')} transparent block style={styles.loginBtn}><Text style={{color: '#19192B',fontWeight: '600'}}>SIGN IN</Text></Button>
+                            <Button rounded onPress={() => this.pushNewRoute('signIn')} block ><Text style={{color: '#fff',fontWeight: '600'}}>SIGN IN</Text></Button>
                             </Col>
                             <Col style={{padding: 10}}>
-                            <Button onPress={() => this.pushNewRoute('register')} block style={styles.registerBtn}><Text style={{fontWeight: '600',color: '#fff'}}>REGISTER</Text></Button>
+                            <Button rounded onPress={() => this.pushNewRoute('register')} transparent bordered block ><Text style={{fontWeight: '600',color: '#428bca'}}>REGISTER</Text></Button>
                             </Col>
                         </Grid>
                     </View>
