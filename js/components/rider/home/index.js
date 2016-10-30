@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
+import polyline from 'polyline';
 
 import {BlurView} from 'react-native-blur';
 import LoadingOverlay from '../LoadingOverlay';
@@ -40,6 +41,9 @@ const LONGITUDE = 77.586234;
 const LATITUDE_DELTA = 0.0722;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
+
+var BTClient = require('react-native-braintree');
+BTClient.setup("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIxNDM1MzU4MGM0NmQwY2ZlMDJiMjFjNDZjNjkzNzBjZTE0NTI3MGI3ZjIwN2YzMGE4MTUxYjlmODhjZTI4NTNifGNyZWF0ZWRfYXQ9MjAxNi0xMC0yN1QwNDowNDoxMC45NzgwMDEyNDArMDAwMFx1MDAyNm1lcmNoYW50X2lkPTM0OHBrOWNnZjNiZ3l3MmJcdTAwMjZwdWJsaWNfa2V5PTJuMjQ3ZHY4OWJxOXZtcHIiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvMzQ4cGs5Y2dmM2JneXcyYi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzLzM0OHBrOWNnZjNiZ3l3MmIvY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tLzM0OHBrOWNnZjNiZ3l3MmIifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjp0cnVlLCJtZXJjaGFudEFjY291bnRJZCI6ImFjbWV3aWRnZXRzbHRkc2FuZGJveCIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiMzQ4cGs5Y2dmM2JneXcyYiIsInZlbm1vIjoib2ZmIn0=");
 
 
 
@@ -138,7 +142,7 @@ class Home extends Component {
         this.setState({modalVisible: false});
 
     var pickupItem = {"toLocation" : this.state.toLocation, "toLatitude": this.state.toLatitude, "toLongtitude" : this.state.toLongtitude, 
-    "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude};
+    "fromLocation" : this.state.fromLocation,"fromLatitude": this.state.fromLatitude, "fromLongtitude" : this.state.fromLongtitude, "overview_polyline" : this.state.overview_polyline};
     this.props.createPickup('createPickup',pickupItem);
   }
   
@@ -150,6 +154,13 @@ class Home extends Component {
 
 
     componentDidMount() {
+
+//       BTClient.showPaymentViewController().then(function(nonce) {
+//   //payment succeeded, pass nonce to server
+// })
+// .catch(function(err) {
+//   //error handling
+// });
 
 
 
@@ -204,6 +215,94 @@ class Home extends Component {
   onUpdateUserLocation (location) {
     console.log(location)
   }
+  drawRoute(){
+    fetch('https://maps.googleapis.com/maps/api/directions/json?units=imperial&origin='+this.state.fromLatitude + ','+this.state.fromLongtitude+'&destination=' + this.state.toLatitude + ',' + this.state.toLongtitude + '&key=AIzaSyBIxUYPeN_bdWQMghHe2I62itZy2uzmm3c', {
+                                                      method: 'POST',
+                                                      headers: {
+                                                       
+                                                      },
+                                                      body: JSON.stringify({
+                                                        
+                                                        
+                                                      })
+                                                    }) .then((response) => response.json())
+                                                          .then((responseJson) => {
+                                                            if (responseJson.status = 'OK'){
+
+                                                             
+
+                                                               
+
+                                                                     
+                                                                     console.log(responseJson.routes[0].overview_polyline.points);
+                                                                     var overview_polyline = polyline.decode(responseJson.routes[0].overview_polyline.points);
+                                                                     console.log("overview_polyline:");
+                                                                     console.log(overview_polyline);
+                                                                     this.setState({overview_polyline: overview_polyline});
+
+                                                                       this.setState({ annotations: [{
+                                                          coordinates: this.state.fromCoordinates,
+                                                          type: 'point',
+                                                          title: 'From:' + this.state.fromLocation,
+                                                          fillAlpha: 1,
+                                                          fillColor: '#000000',
+                                                          strokeAlpha: 1,
+                                                          subtitle: 'It has a rightCalloutAccessory too',
+                                                          // rightCalloutAccessory: {
+                                                          //   source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
+                                                          //   height: 50,
+                                                          //   width: 50
+                                                          // }, 
+                                                          id: 'marker1'
+                                                        },
+                                                        {
+                                                          coordinates: this.state.toCoordinates,
+                                                          type: 'point',
+                                                          title: 'To:' + this.state.toLocation,
+                                                          fillAlpha: 1,
+                                                          fillColor: '#000000',
+                                                          strokeAlpha: 1,
+                                                          subtitle: 'It has a rightCalloutAccessory too',
+                                                          // rightCalloutAccessory: {
+                                                          //   source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
+                                                          //   height: 50,
+                                                          //   width: 50
+                                                          // }, 
+                                                          id: 'marker2'
+                                                        },
+                                                        {
+                                                          coordinates: overview_polyline,
+                                                          type: 'polyline',
+                                                          strokeColor: '#40E0D0',
+                                                          strokeWidth: 5,
+                                                          strokeAlpha: 1,
+                                                          id: 'foobar'
+                                                        }
+
+
+
+
+                                                        ]});
+
+                                                                      
+                                                                      
+                                                    
+
+                                                                
+                                                            }
+
+                                                            else{
+                                                                console.log("didnt work");
+
+
+
+                                                            }
+                                                          })
+                                                          .catch((error) => {
+                                                            console.log("didnt work at all error");
+                                                            console.error(error);
+                                                          })
+  }
 
    
 
@@ -235,6 +334,7 @@ class Home extends Component {
                         {(this.state.visible) ?
                         (<MapView ref={map => { this._map = map; }}
                             style={styles.map}
+                            styleURL = {Mapbox.mapStyles.dark}
                             rotateEnabled={true}
                             zoomEnabled={true}
                             showsUserLocation={true}
@@ -291,6 +391,8 @@ class Home extends Component {
                                   this.setState({fromLocation:details.name});
                                   this.setState({fromLatitude:details.geometry.location.lat});
                                   this.setState({fromLongtitude:details.geometry.location.lng});
+                                  console.log("checking from long");
+                                  console.log(this.state.fromLatitude,this.state.fromLongtitude);
                                   this.setState({ fromCoordinates: [parseFloat(details.geometry.location.lat),parseFloat(details.geometry.location.lng) ]});
                                   
                                   console.log("checking parseFloat:");
@@ -419,49 +521,8 @@ class Home extends Component {
                                   
                                   
                                   this._map && this._map.setVisibleCoordinateBounds(parseFloat(this.state.fromLatitude), parseFloat(this.state.fromLongtitude), parseFloat(this.state.toLatitude), parseFloat(this.state.toLongtitude), 100, 100, 100, 100);
-                                  this.setState({ annotations: [{
-                                                          coordinates: this.state.fromCoordinates,
-                                                          type: 'point',
-                                                          title: 'From:' + this.state.fromLocation,
-                                                          fillAlpha: 1,
-                                                          fillColor: '#000000',
-                                                          strokeAlpha: 1,
-                                                          subtitle: 'It has a rightCalloutAccessory too',
-                                                          // rightCalloutAccessory: {
-                                                          //   source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
-                                                          //   height: 50,
-                                                          //   width: 50
-                                                          // }, 
-                                                          id: 'marker1'
-                                                        },
-                                                        {
-                                                          coordinates: this.state.toCoordinates,
-                                                          type: 'point',
-                                                          title: 'To:' + this.state.toLocation,
-                                                          fillAlpha: 1,
-                                                          fillColor: '#000000',
-                                                          strokeAlpha: 1,
-                                                          subtitle: 'It has a rightCalloutAccessory too',
-                                                          // rightCalloutAccessory: {
-                                                          //   source: { uri: 'https://cldup.com/9Lp0EaBw5s.png' },
-                                                          //   height: 50,
-                                                          //   width: 50
-                                                          // }, 
-                                                          id: 'marker2'
-                                                        },
-                                                        {
-                                                          coordinates: [this.state.fromCoordinates, this.state.toCoordinates ],
-                                                          type: 'polyline',
-                                                          strokeColor: '#00FB00',
-                                                          strokeWidth: 4,
-                                                          strokeAlpha: .5,
-                                                          id: 'foobar'
-                                                        }
-
-
-
-
-                                                        ]});
+                                   this.drawRoute();
+                                
                                 this._map && this._map.selectAnnotation("marker1",false);
                                 this._map && this._map.selectAnnotation("marker2",false);
                                   }}

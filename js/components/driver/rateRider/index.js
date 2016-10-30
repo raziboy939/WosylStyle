@@ -8,7 +8,10 @@ import { popRoute } from '../../../actions/route';
 
 import { Header, Content, Text, Button, Icon, Card, CardItem } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
-import MapView from 'react-native-maps';
+const accessToken = 'sk.eyJ1Ijoid29zeWwxMjMiLCJhIjoiY2l0NmxxdnJpMDAwNDMwbWZtY21jdmp2NiJ9.H2G2P39VR7kEkEtz0Ji3lw';
+import Mapbox from 'react-native-mapbox-gl';
+Mapbox.setAccessToken(accessToken);
+import { MapView } from 'react-native-mapbox-gl';
 
 import styles from './styles';
 import theme from '../../../themes/base-theme';
@@ -27,19 +30,56 @@ class RateRider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            a: {
-                latitude: 12.920000,
-                longitude: LONGITUDE,
-            },
-            
-            modalVisible : true,
+            progress: 0.25,
+             isVisible: false,
+            fromLocation: 'From: Current Location',
+            fromLatitude: 0,
+            fromLongtitude: 0,
+            toLocation: '',
+            toLatitude: 0,
+            toLongtitude: 0,
+            itemPickup: '',
+            notes: '',
+
+
+            animationType: 'none',
+      modalVisible: true,
+    transparent: false,
+    selectedSupportedOrientation: 0,
+    currentOrientation: 'unknown',
             
         };
     }
+
+
+    getInitialState() {
+    return {
+      mapLocation: {
+        latitude: 0,
+        longitude: 0
+       },
+       center: {
+         latitude: this.state.position.latitude,
+         longitude: this.state.position.longitude
+       },
+       
+       zoom: 12,
+       direction: 0
+     }
+  }
      setModalVisible(visible) {
     this.setState({modalVisible: visible});
   } 
     componentDidMount() {
+
+         navigator.geolocation.getCurrentPosition(
+      (position) => this.setState({position}),
+      (error) => alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    navigator.geolocation.watchPosition((position) => {
+      this.setState({position});
+    });
         let that = this;
         setTimeout(function () {
             that.setState({
@@ -59,21 +99,24 @@ class RateRider extends Component {
                     <Content>
                     </Content>
                         {(this.state.visible) ?
-                        (<MapView
-                            ref='map'
+                        (<MapView ref={map => { this._map = map; }}
                             style={styles.map}
-                            initialRegion={{
-                            latitude: LATITUDE,
-                            longitude: LONGITUDE,
-                            latitudeDelta: LATITUDE_DELTA,
-                            longitudeDelta: LONGITUDE_DELTA,
-                            }}>
-                            <MapView.Marker coordinate={this.state.a}>
-                                <View>
-                                    <Icon name='ios-car' style={{color: '#222',fontSize: 24}} />
-                                </View>
-                            </MapView.Marker>
-                        </MapView>)
+                            rotateEnabled={true}
+                            zoomEnabled={true}
+                            showsUserLocation={true}
+                            attributionButtonIsHidden = {false}
+                            logoIsHidden = {true}
+                            compassIsHidden = {true}
+                            accessToken={'sk.eyJ1Ijoid29zeWwxMjMiLCJhIjoiY2l0NmxxdnJpMDAwNDMwbWZtY21jdmp2NiJ9.H2G2P39VR7kEkEtz0Ji3lw'}
+                            initalZoomLevel = {13}
+                            centerCoordinate={this.state.center}
+                            userLocationVisible={true}
+                            userTrackingMode = {Mapbox.userTrackingMode.follow}
+                            annotations={this.state.annotations}
+                            annotationsAreImmutable
+                            
+                            debugActive={false}
+                            direction={this.state.direction}/>)
                         : <View />
                         }
                         <Image source={require('../../../../images/dummyMap.png')} style={{height: height, opacity: this.state.opacity}}/> 

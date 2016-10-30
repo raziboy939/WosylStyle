@@ -78,7 +78,7 @@ class SideBar extends Component {
                                 <Icon name='ios-power' style={Platform.OS === 'ios' ? styles.iosSidebarIcons : styles.aSidebarIcons} />
                                 <Text style={[styles.linkText,{fontWeight: '700'}]}>SIGN OUT</Text>
                             </ListItem>
-                            <ListItem button onPress={() => this.navigateTo('receipt')} style={Platform.OS === 'android' ? styles.aAboutlink : styles.iosAboutlink} >
+                            <ListItem button onPress={() => this.navigateTo('home')} style={Platform.OS === 'android' ? styles.aAboutlink : styles.iosAboutlink} >
                                 <Text style={{color: '#999'}}>About</Text>
                             </ListItem>
 

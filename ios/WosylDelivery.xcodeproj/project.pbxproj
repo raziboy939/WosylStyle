@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -26,6 +27,9 @@
 		4C0D841E1D8D124900D84EB2 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0D841D1D8D124900D84EB2 /* Mapbox.framework */; };
 		4C0D841F1D8D124900D84EB2 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0D841D1D8D124900D84EB2 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C0D84221D8D127B00D84EB2 /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0D841A1D8D122000D84EB2 /* libRCTMapboxGL.a */; };
+		4C2E47041DC1B768009D2B7C /* Braintree.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C2E47031DC1B768009D2B7C /* Braintree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4C2E47091DC1B768009D2B7C /* Braintree.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2E47011DC1B768009D2B7C /* Braintree.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4C2E47221DC1B7A4009D2B7C /* Braintree in Resources */ = {isa = PBXBuildFile; fileRef = 4C2E47211DC1B7A4009D2B7C /* Braintree */; };
 		4C4354FF1DA9DB430029F4F5 /* libRNOverlay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C4354FD1DA9DB1B0029F4F5 /* libRNOverlay.a */; };
 		4CA478531D922EB70025A690 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA478461D922EAC0025A690 /* libRCTCamera.a */; };
 		54CD9766B968497087DC8D8A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B8A8C7C08B641DC98F0CC18 /* Zocial.ttf */; };
@@ -141,6 +145,13 @@
 			remoteGlobalIDString = C5DBB34B1AF2EF2B00E611A9;
 			remoteInfo = RCTMapboxGLTests;
 		};
+		4C2E47061DC1B768009D2B7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C2E47001DC1B768009D2B7C;
+			remoteInfo = Braintree;
+		};
 		4C4354FC1DA9DB1B0029F4F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4C4354E71DA9DB1A0029F4F5 /* RNOverlay.xcodeproj */;
@@ -200,6 +211,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4C0D841F1D8D124900D84EB2 /* Mapbox.framework in Embed Frameworks */,
+				4C2E47091DC1B768009D2B7C /* Braintree.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +250,10 @@
 		4B059005DD884F0895D5F9AA /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		4C0D84141D8D122000D84EB2 /* RCTMapboxGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMapboxGL.xcodeproj; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL.xcodeproj"; sourceTree = "<group>"; };
 		4C0D841D1D8D124900D84EB2 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		4C2E47011DC1B768009D2B7C /* Braintree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Braintree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C2E47031DC1B768009D2B7C /* Braintree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree.h; sourceTree = "<group>"; };
+		4C2E47051DC1B768009D2B7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C2E47211DC1B7A4009D2B7C /* Braintree */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Braintree; sourceTree = "<group>"; };
 		4C4354E71DA9DB1A0029F4F5 /* RNOverlay.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNOverlay.xcodeproj; path = "../node_modules/react-native-overlay/RNOverlay.xcodeproj"; sourceTree = "<group>"; };
 		4CA4783E1D922EAC0025A690 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		6E225B3D64BB48A8BCC1E811 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
@@ -285,6 +301,13 @@
 				4C0D841E1D8D124900D84EB2 /* Mapbox.framework in Frameworks */,
 				34D3FBA9ABAC4AB2B154918F /* libRCTMapboxGL.a in Frameworks */,
 				4A97C7C7918C4019902663A8 /* libRNBlur.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C2E46FD1DC1B768009D2B7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +457,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4C2E47021DC1B768009D2B7C /* Braintree */ = {
+			isa = PBXGroup;
+			children = (
+				4C2E47031DC1B768009D2B7C /* Braintree.h */,
+				4C2E47051DC1B768009D2B7C /* Info.plist */,
+			);
+			path = Braintree;
+			sourceTree = "<group>";
+		};
 		4C4354E81DA9DB1A0029F4F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,11 +542,13 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4C2E47211DC1B7A4009D2B7C /* Braintree */,
 				4C0D841D1D8D124900D84EB2 /* Mapbox.framework */,
 				4C0D84141D8D122000D84EB2 /* RCTMapboxGL.xcodeproj */,
 				13B07FAE1A68108700A75B9A /* WosylDelivery */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* WosylDeliveryTests */,
+				4C2E47021DC1B768009D2B7C /* Braintree */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				8CED754CE47D41E7B14D9465 /* Frameworks */,
 				284406B1ACAA474BA42F18EA /* Resources */,
@@ -528,6 +562,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* WosylDelivery.app */,
 				00E356EE1AD99517003FC87E /* WosylDeliveryTests.xctest */,
+				4C2E47011DC1B768009D2B7C /* Braintree.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -541,6 +576,17 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4C2E46FE1DC1B768009D2B7C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C2E47041DC1B768009D2B7C /* Braintree.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		00E356ED1AD99517003FC87E /* WosylDeliveryTests */ = {
@@ -575,11 +621,30 @@
 			buildRules = (
 			);
 			dependencies = (
+				4C2E47071DC1B768009D2B7C /* PBXTargetDependency */,
 			);
 			name = WosylDelivery;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* WosylDelivery.app */;
 			productType = "com.apple.product-type.application";
+		};
+		4C2E47001DC1B768009D2B7C /* Braintree */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C2E47201DC1B768009D2B7C /* Build configuration list for PBXNativeTarget "Braintree" */;
+			buildPhases = (
+				4C2E46FC1DC1B768009D2B7C /* Sources */,
+				4C2E46FD1DC1B768009D2B7C /* Frameworks */,
+				4C2E46FE1DC1B768009D2B7C /* Headers */,
+				4C2E46FF1DC1B768009D2B7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Braintree;
+			productName = Braintree;
+			productReference = 4C2E47011DC1B768009D2B7C /* Braintree.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -593,6 +658,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					4C2E47001DC1B768009D2B7C = {
+						CreatedOnToolsVersion = 7.3.1;
 					};
 				};
 			};
@@ -685,6 +753,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* WosylDelivery */,
 				00E356ED1AD99517003FC87E /* WosylDeliveryTests */,
+				4C2E47001DC1B768009D2B7C /* Braintree */,
 			);
 		};
 /* End PBXProject section */
@@ -845,6 +914,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				4C2E47221DC1B7A4009D2B7C /* Braintree in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				F2DE5DEE39FD4CCBA664C5E4 /* Entypo.ttf in Resources */,
 				D5B6C30C549E46FCBA20DE16 /* EvilIcons.ttf in Resources */,
@@ -854,6 +924,13 @@
 				96462B84A9A845A88FC19D24 /* MaterialIcons.ttf in Resources */,
 				6591B6C105004A1BA0676260 /* Octicons.ttf in Resources */,
 				54CD9766B968497087DC8D8A /* Zocial.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C2E46FF1DC1B768009D2B7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,6 +984,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4C2E46FC1DC1B768009D2B7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -914,6 +998,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* WosylDelivery */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		4C2E47071DC1B768009D2B7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4C2E47001DC1B768009D2B7C /* Braintree */;
+			targetProxy = 4C2E47061DC1B768009D2B7C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1034,6 +1123,56 @@
 			};
 			name = Release;
 		};
+		4C2E470A1DC1B768009D2B7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Braintree/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Wosyl.Braintree;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4C2E470B1DC1B768009D2B7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Braintree/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Wosyl.Braintree;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1147,6 +1286,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4C2E47201DC1B768009D2B7C /* Build configuration list for PBXNativeTarget "Braintree" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C2E470A1DC1B768009D2B7C /* Debug */,
+				4C2E470B1DC1B768009D2B7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

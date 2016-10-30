@@ -36,6 +36,8 @@ import RideRequest from './components/driver/rideRequest';
 import PickRider from './components/driver/pickRider';
 import StartRide from './components/driver/startRide';
 import DropOff from './components/driver/dropOff';
+import DriverHome from './components/driver/driverHome';
+
 import RateRider from './components/driver/rateRider';
 import LoadingOverlay from './components/rider/LoadingOverlay';
 import { statusBarColor } from "./themes/base-theme";
@@ -211,6 +213,8 @@ class AppNavigator extends Component {
                 return <StartRide navigator={navigator} />;
             case 'dropOff':
                 return <DropOff navigator={navigator} />;
+            case 'driverHome':
+                return <DriverHome navigator={navigator} />;
             case 'rateRider':
                 return <RateRider navigator={navigator} />;
             case 'PhoneVerify':

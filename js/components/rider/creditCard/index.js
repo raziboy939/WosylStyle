@@ -35,7 +35,7 @@ class CreditCard extends Component {
                 <Container theme={theme} style={{backgroundColor: '#fff'}} >
      
                     <Header style={Platform.OS === 'ios' ? styles.iosHeader : styles.aHeader }>
-                        <Button transparent  onPress={() => this.replaceRoute('home')} >
+                        <Button transparent  onPress={() => this.popRoute()} >
                             <Icon name='md-arrow-back' style={{fontSize: 28}} />
                         </Button>
                         <Text style={Platform.OS === 'ios' ? styles.iosHeaderTitle : styles.aHeaderTitle }>Add Payment</Text>

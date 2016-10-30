@@ -101,6 +101,8 @@ if (action.type === CREATE_SESSION) {
     //   // If top route is home and user navigates to a route other than home, then push
       if(action.route != 'home')
         globalNav.navigator.push({id: action.route});
+      else
+         globalNav.navigator.resetTo({id: 'home'});
 
       // If top route is home and user navigates to home, do nothing
      

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import {BlurView} from 'react-native-blur';
 import LoadingOverlay from '../LoadingOverlay';
 import AwesomeButton from 'react-native-awesome-button';
+import ActionCable from 'react-native-actioncable'
 
 import { Image, View, Dimensions, Platform, StatusBar, Switch, Slider, DatePickerIOS, Picker, PickerIOS, ProgressViewIOS } from 'react-native';
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
@@ -73,6 +74,8 @@ class InSession extends Component {
         
           this.state = {
 
+            message: '',
+
             progress: 0.25,
              isVisible: false,
             fromLocation: 'From: Current Location',
@@ -126,7 +129,31 @@ class InSession extends Component {
  setModalVisible (visible) {
     this.setState({modalVisible: visible});
   }
- 
+ setupSubscription() {
+
+   var App = {};
+App.cable = ActionCable.createConsumer('ws://ec2-52-39-54-57.us-west-2.compute.amazonaws.com/cable?auth_token=' + this.props.auth_token);
+
+    App.comments = App.cable.subscriptions.create("CommentsChannel", {
+      message_id: "message_id",
+
+      connected: function () {
+        // Timeout here is needed to make sure Subscription
+        // is setup properly, before we do any actions.
+        setTimeout(() => this.perform('follow',
+                                      {message_id: this.message_id}),
+                                      1000);
+        console.log("connected to cable");
+      },
+
+      received: function(data) {
+        console.log("receiving data from cable");
+        console.log(data);
+      },
+
+     
+    });
+  }
   
 
 
@@ -137,7 +164,9 @@ class InSession extends Component {
 
     componentDidMount() {
 
+     
 
+this.setupSubscription();
 
             navigator.geolocation.getCurrentPosition(
       (position) => this.setState({position}),
@@ -281,10 +310,19 @@ function mapStateToProps(state) {
     last_name: state.route.users.last_name,
     email: state.route.users.email,
     phone_no: state.route.users.phone_no,
+    auth_token: state.route.users.access_token,
 
     
   }
     }
+
+    else
+      return {
+        first_name: 'nothing',
+    last_name: "nothing",
+    email: "nothing",
+    phone_no: "nothing",
+      }
 }
 
 function bindActions(dispatch) {

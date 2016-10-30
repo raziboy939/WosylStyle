@@ -123,12 +123,17 @@ class SignIn extends Component {
                                                                 if(responseJson.user.is_phone_verified ){
                                                                     this.setState({is_driver_verified:responseJson.user.is_driver_verified});
 
-                                                                     console.log("USER DETAILS:")
-                                                               console.log(this.state);
+                                                                    if(responseJson.user.is_driver_verified){
+                                                                      this.replaceRoute('driverHome',this.state.userDetail);
+
+                                                                    }
+
+                                                                    else{
 
 
                                                                     this.props.setUser(responseJson.user);
                                                                  this.replaceRoute('home',this.state.userDetail);
+                                                                  }
                                                                 }
 
                                                                  else{

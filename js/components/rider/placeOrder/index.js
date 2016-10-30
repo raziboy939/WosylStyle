@@ -45,7 +45,7 @@ class placeOrder extends Component {
     } 
 
     createSession(response){
-      this.props.createSession('inSession',response);
+      this.props.createSession('rateRider',response);
     }
 
     

@@ -57,6 +57,7 @@ function mapStateToProps(state) {
           fromLocation: state.route.pickup.fromLocation,
           fromLatitude: state.route.pickup.fromLatitude,
           fromLongtitude: state.route.pickup.fromLongtitude,
+          overview_polyline: state.route.pickup.overview_polyline,
           userDetail: state.route.users,
           center: {
       latitude: parseFloat(state.route.pickup.toLatitude),
@@ -157,11 +158,11 @@ class CreatePickup extends Component {
                                                           id: 'marker2'
                                                         },
                                                         {
-                                                          coordinates: [[parseFloat(this.props.fromLatitude), parseFloat(this.props.fromLongtitude)],[parseFloat(this.props.toLatitude), parseFloat(this.props.toLongtitude)] ],
+                                                          coordinates: this.props.overview_polyline,
                                                           type: 'polyline',
                                                           strokeColor: '#00FB00',
-                                                          strokeWidth: 4,
-                                                          strokeAlpha: .5,
+                                                          strokeWidth: 5,
+                                                          strokeAlpha: 1,
                                                           id: 'foobar'
                                                         }
 
@@ -335,6 +336,7 @@ this._map && this._map.setVisibleCoordinateBounds(parseFloat(this.props.fromLati
                         {(this.state.visible) ?
                         <MapView  ref={map => { this._map = map; }}
           style={styles.map}
+          styleURL = {Mapbox.mapStyles.dark}
           initialCenterCoordinate={this.props.center}
           initialZoomLevel={10}
           initialDirection={0}

@@ -170,13 +170,13 @@ module.exports = StyleSheet.create({
     textAlign: 'center'
   },
   modalStyle: {
-    marginTop:40,
+    marginTop:10,
     position: 'relative',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 300,
-    backgroundColor: '#428bca'
+    bottom: 50,
+    backgroundColor: 'transparent'
 
     
   },
